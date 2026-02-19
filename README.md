@@ -1,2 +1,2 @@
 # CoursesOnlineEcommerce
-Ecommerce project to practice full-stack MEAN
+Ecommerce project to practice full-stack MEAN.
