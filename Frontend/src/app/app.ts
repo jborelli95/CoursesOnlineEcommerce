@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 
 declare function HOMEINIT([]):any;
 declare var $: any;
@@ -9,11 +9,13 @@ declare var $: any;
   standalone: false,
   styleUrl: './app.css',
 })
-export class App {
+export class App implements OnInit {
   protected readonly title = signal('Frontend');
+
   ngOnInit(): void {
     setTimeout(() => {
       HOMEINIT($);
-    }, 50);
+    }, 1000);
   }
+  
 }
