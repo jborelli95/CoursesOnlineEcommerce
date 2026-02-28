@@ -5,6 +5,8 @@
 function HOMEINIT ($) {
     'use strict';
 
+    console.log("hola mundoi estoy en el main js");
+
     var eduJs = {
         i: function (e) {
             eduJs.d();
@@ -1016,3 +1018,5 @@ function HOMEINIT ($) {
 }
 
 HOMEINIT(jQuery);
+
+window.HOMEINIT = HOMEINIT;
