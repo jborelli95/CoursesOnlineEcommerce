@@ -11,6 +11,7 @@ router.post("/register", userController.register);
 // http://localhost:3000/api/users/login
 router.post("/login", userController.login);
 
+// http://localhost:3000/api/users/login_admin
 router.post("/login_admin", userController.login_admin);
 
 export default router;

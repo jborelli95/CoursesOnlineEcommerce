@@ -22,6 +22,7 @@ export class LoginAndRegister implements OnInit{
   ngOnInit(): void {
     if(this.authService.user){
       console.log(this.authService.user);
+      alert("Ya esta logeado, sera enviado al home de la pagina")
       this.router.navigate(['/']);
     }
   }
