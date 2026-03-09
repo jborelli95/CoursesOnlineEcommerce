@@ -5,9 +5,24 @@ import token from "../services/token.js";
 export default {
   register: async (req, res) => {
     try {
+      console.log("Estmaos en regsiter user controller backend");
+      //**Desmenuzamos lo que nos viene en el body */
+      const {name, surname, email, password, rol} = req.body;
+
+      //*Tenemos que probar que el email no sea existnetne en la abse de datos/
+      const user = await models.User.findOne({
+        email: email,
+        state: 1
+      })
+
+      if(user){
+        res.status(200).send({
+          message: 403, 
+          message_text: "El email ingresado ya esta registrado",
+        });
+      }
+
       //Encriptacion de password
-      console.log("Hola mundo!");
-      console.log(req.body);
       req.body.password = await bcrypt.hash(req.body.password, 10);
 
       //req.body debe tener los mismos atrivutos que definho en el modelo Schema de usuario.
