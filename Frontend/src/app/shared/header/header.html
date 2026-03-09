@@ -1158,7 +1158,11 @@
             </li>
 
             <li class="account-access rbt-user-wrapper d-none d-xl-block">
-              <a href="#"><i class="feather-user"></i>Admin</a>
+              @if(islogged()){
+                <div>Welcome back, user!</div>
+              }@else{
+                <div>No esta logeado</div>
+              }
               <div class="rbt-user-menu-list-wrapper">
                 <div class="inner">
                   <div class="rbt-admin-profile">
@@ -1238,7 +1242,7 @@
                       </a>
                     </li>
                     <li>
-                      <a href="index.html">
+                      <a href="#" onclick="return false;" (click)="logOut()">
                         <i class="feather-log-out"></i>
                         <span>Logout</span>
                       </a>
