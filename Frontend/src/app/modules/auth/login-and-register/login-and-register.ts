@@ -34,6 +34,9 @@ export class LoginAndRegister implements OnInit{
 
   ngOnInit(): void {
     console.log(this.authService.user);
+    if(this.authService.user){
+      this.router.navigateByUrl("/");
+    }
   }
 
   login(){

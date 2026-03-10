@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { URL_SERVICES } from '../../../config/config';
+import { URL_FRONTEND, URL_SERVICES } from '../../../config/config';
 import { catchError, map, of } from 'rxjs';
 import { url } from 'inspector';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -11,16 +12,17 @@ import { url } from 'inspector';
 export class Auth {
   user: any = null;
   token: any = null;
-
+  hola:string = "holaaa";
   constructor(
     private http: HttpClient,
     private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.initAuthToken();
   }
 
   initAuthToken() {
-    if (typeof window !== 'undefined' && window.localStorage) {
+    if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem('token');
       if (token){
         this.token = token;
@@ -60,7 +62,6 @@ export class Auth {
       localStorage.setItem('user', JSON.stringify(auth.USER.user));
       return true;
     }
-
     return false;
   }
 
@@ -71,11 +72,13 @@ export class Auth {
   }
 
   logOut(){
+    console.log("Estoy en logout");
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    console.log("logout baby");
     setTimeout(() => {
-      this.router.navigateByUrl("auth/login")
+      //this.router.navigateByUrl("/");
+      location.href = URL_FRONTEND + "/auth/login";
     }, 50);
   }
+
 }

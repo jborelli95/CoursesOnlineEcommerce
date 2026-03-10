@@ -9,11 +9,10 @@ import { Auth } from '../../modules/auth/service/auth';
 })
 export class Header implements OnInit{
 
-  user: any = this.authService.user;
+  user: any = null;
 
   constructor(public authService: Auth) {
-    console.log(this.user);
-    console.log(this.islogged());
+    this.user = authService.user;
   }
 
   ngOnInit(): void {
@@ -29,7 +28,7 @@ export class Header implements OnInit{
   }
 
   logOut(){
-    console.log("logOut header");
+    console.log("logOut");
     this.authService.logOut();
   }
 
