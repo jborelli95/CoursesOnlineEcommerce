@@ -72,7 +72,6 @@ export class Auth {
   }
 
   logOut(){
-    console.log("Estoy en logout");
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setTimeout(() => {
