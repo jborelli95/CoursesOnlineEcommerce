@@ -28,7 +28,7 @@ import { InlineSVGModule } from 'ng-inline-svg-2';
     NgbModule,
     ReactiveFormsModule,
     InlineSVGModule,
-    NgbModalModule
+    NgbModalModule,
   ],
 })
 export class UsersModule {}
