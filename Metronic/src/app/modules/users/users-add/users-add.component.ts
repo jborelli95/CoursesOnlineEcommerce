@@ -11,9 +11,9 @@ import { reduce } from 'rxjs';
 export class UsersAddComponent {
   
   registerForm:FormGroup;
-
   file_avatar:any;
   preview_image:any = "assets/media/avatars/300-6.jpg";
+  unmatchPw:boolean = false;
 
   constructor(
     private fb:FormBuilder,
@@ -31,6 +31,20 @@ export class UsersAddComponent {
   }
 
   submit(){
+    if(this.registerForm.invalid){
+      this.registerForm.markAllAsTouched();
+      this.toastr.error("Complete all required fields", "Error!: ");
+      return;
+    }
+
+    if(this.registerForm.controls['password'].value != this.registerForm.controls['confirmedPassword'].value){
+      console.log("unmatch pw true");
+      this.unmatchPw = true;
+      console.log(this.unmatchPw);
+      return;
+    }
+
+
     console.log(this.registerForm.value);
   }
 

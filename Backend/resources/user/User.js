@@ -1,5 +1,5 @@
 export default {
-    api_resource_user: async(user) => {
+    api_resource_user: (user) => {
         return{
             _id: user._id,
             name: user.name,
@@ -7,7 +7,7 @@ export default {
             email: user.email,
             description: user.description,
             rol: user.rol,
-            avatar: process.env.URL_BACKEND + "api/users/user-image" + user.avatar,
+            avatar: user.avatar ? process.env.URL_BACKEND + "api/users/user-image" + user.avatar : null,
         }
     },
 }

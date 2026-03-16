@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import token from "../services/token.js";
 import fs from "fs";
 import path from "path";
-import resource from '../resources'
+import resource from '../resources/index.js'
 
 export default {
   register: async (req, res) => {
@@ -236,10 +236,11 @@ export default {
       var search = req.query.search;
       let users = await models.User.find({
         $or: [
-          { name: new RegExp(search, "i") },
-          { surname: new RegExp(search, "i") },
-          { email: new RegExp(search, "i") },
+          { 'name': new RegExp(search, "i") },
+          { 'surname': new RegExp(search, "i") },
+          { 'email': new RegExp(search, "i") },
         ],
+        "rol": {$in: ["admin", "instructor"]}
       }).sort({ createdAt: -1 });
 
       users = users.map((u) => {
@@ -248,6 +249,7 @@ export default {
 
       res.status(200).json({
         users_list: users,
+        message: 'Getting users list worked successfully'
       });
     } catch (error) {
       console.log(error);

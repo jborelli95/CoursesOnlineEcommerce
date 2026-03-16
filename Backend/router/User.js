@@ -17,7 +17,7 @@ router.post("/login", userController.login);
 // http://localhost:3000/api/users/login_admin
 router.post("/login_admin", userController.login_admin);
 
-//CRUD admin
+//CRUD user
 router.post("/register_admin", path ,userController.register_admin);
 router.post("/update", path, userController.update);
 router.get('/list', userController.list);
