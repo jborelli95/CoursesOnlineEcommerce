@@ -1,4 +1,4 @@
-import User from './user/User.js'
+import User from './user/user.js'
 
 export default {
     User,
