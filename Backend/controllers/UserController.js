@@ -9,7 +9,7 @@ export default {
   register: async (req, res) => {
     try {
       //**Desmenuzamos lo que nos viene en el body */
-      const { name, surname, email, password, rol } = req.body;
+      const { email } = req.body;
 
       //*Tenemos que probar que el email no sea existnetne en la abse de datos/
       const user = await models.User.findOne({
@@ -54,7 +54,7 @@ export default {
         let compare = await bcrypt.compare(req.body.password, user.password);
         if (compare) {
           //Usuario existente y activo.
-          let tokenT = await token.encode(user._id, user.rol, user.email);
+          let tokenT = await token.encode(user._id, user.role, user.email);
 
           const USER_BODY = {
             token: tokenT,
@@ -95,7 +95,7 @@ export default {
       const user = await models.User.findOne({
         email: req.body.email,
         state: 1,
-        rol: "admin",
+        role: "Administrator",
       });
 
       if (user) {
@@ -103,7 +103,7 @@ export default {
         let compare = await bcrypt.compare(req.body.password, user.password);
         if (compare) {
           //Usuario existente y activo.
-          let tokenT = await token.encode(user._id, user.rol, user.email);
+          let tokenT = await token.encode(user._id, user.role, user.email);
 
           const USER_BODY = {
             token: tokenT,
@@ -140,7 +140,7 @@ export default {
   register_admin: async (req, res) => {
     try {
       //**Desmenuzamos lo que nos viene en el body */
-      const { name, surname, email, password, rol } = req.body;
+      const { email } = req.body;
 
       //*Tenemos que probar que el email no sea existnetne en la abse de datos/
       const user = await models.User.findOne({
@@ -240,7 +240,7 @@ export default {
           { 'surname': new RegExp(search, "i") },
           { 'email': new RegExp(search, "i") },
         ],
-        "rol": {$in: ["admin", "instructor"]}
+        "role": {$in: ["Administrator", "Instructor"]}
       }).sort({ createdAt: -1 });
 
       users = users.map((u) => {

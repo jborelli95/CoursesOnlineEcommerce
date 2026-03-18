@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { reduce } from 'rxjs';
+import { UserService } from '../service/user.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-users-add',
@@ -9,6 +11,8 @@ import { reduce } from 'rxjs';
   styleUrls: ['./users-add.component.scss']
 })
 export class UsersAddComponent {
+
+  @Output() userC: EventEmitter<any> = new EventEmitter();
   
   registerForm:FormGroup;
   file_avatar:any;
@@ -17,7 +21,9 @@ export class UsersAddComponent {
 
   constructor(
     private fb:FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private userService:UserService,
+    private modal: NgbActiveModal,
   ){
     this.registerForm = this.fb.group({
       name: ["", [Validators.required, Validators.minLength(2)]],
@@ -44,8 +50,25 @@ export class UsersAddComponent {
       return;
     }
 
+    const formData = new FormData();
 
-    console.log(this.registerForm.value);
+    formData.append('name', this.registerForm.get('name')?.value);
+    formData.append('surname', this.registerForm.get('surname')?.value);
+    formData.append('email', this.registerForm.get('email')?.value);
+    formData.append('password', this.registerForm.get('password')?.value);
+    formData.append('description', this.registerForm.get('description')?.value);
+    formData.append('role', this.registerForm.get('role')?.value);
+    formData.append('avatar', this.file_avatar);
+
+    console.log(formData);
+    this.userService.register(formData).subscribe({
+      next: (value:any) => {
+        console.log(value);
+        this.userC.emit(value.user);
+        this.modal.close();
+      }
+    })
+
   }
 
   processAvatar($event:any){
@@ -62,5 +85,9 @@ export class UsersAddComponent {
     reader.onloadend = () => {
       this.preview_image = reader.result;
     }
+  }
+
+  modalClose(){
+    this.modal.close();
   }
 }
