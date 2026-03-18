@@ -59,7 +59,8 @@ export class UserService {
   remove(user_id:any){
     this.isLoadingSubject.next(true);
     const headers =  new HttpHeaders({'token': this.authservice.token});
-    const URL = URL_SERVICIOS + `/users/remove/${user_id}`;
+    const URL = URL_SERVICIOS + `/users/delete/${user_id}`;
+    console.log(URL);
     return this.http.delete(URL, { headers: headers}).pipe(
       finalize(() => this.isLoadingSubject.next(false)),
     )
