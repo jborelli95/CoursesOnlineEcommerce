@@ -6,8 +6,8 @@ export default {
             surname: user.surname,
             email: user.email,
             description: user.description,
-            rol: user.rol,
-            avatar: user.avatar ? process.env.URL_BACKEND + "api/users/user-image" + user.avatar : null,
+            role: user.role,
+            avatar: user.avatar ? process.env.URL_BACKEND + "/api/users/user-image/" + user.avatar : null,
         }
     },
 }

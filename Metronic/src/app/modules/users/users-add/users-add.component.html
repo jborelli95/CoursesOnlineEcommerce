@@ -6,7 +6,7 @@
     <h2 class="fw-bolder">Add User</h2>
     <!--end::Modal title-->
     <!--begin::Close-->
-    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+    <div class="btn btn-icon btn-sm btn-active-icon-primary" (click)="modalClose()">
       <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
       <span class="svg-icon svg-icon-1">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -87,7 +87,7 @@
               Name is required
             </span>
             <span *ngIf="registerForm.get('name')?.hasError('minlength')">
-              Minimum 3 characters
+              Minimum 2 characters
             </span>
           </div>
         </div>
@@ -224,8 +224,8 @@
         </button>
         <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
           <span class="indicator-label">Submit</span>
-          <span class="indicator-progress">Please wait...
-            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+          <!-- <span class="indicator-progress">Please wait...
+            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span> -->
         </button>
       </div>
       <!--end::Actions-->

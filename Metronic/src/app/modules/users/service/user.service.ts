@@ -40,8 +40,9 @@ export class UserService {
   register(data:any){
     this.isLoadingSubject.next(true);
     const headers =  new HttpHeaders({'token': this.authservice.token});
+    console.log(data);
     const URL = URL_SERVICIOS + "/users/register_admin";
-    return this.http.post(URL, { headers: headers}).pipe(
+    return this.http.post(URL, data, { headers: headers}).pipe(
       finalize(() => this.isLoadingSubject.next(false)),
     )
   }
@@ -50,7 +51,7 @@ export class UserService {
     this.isLoadingSubject.next(true);
     const headers =  new HttpHeaders({'token': this.authservice.token});
     const URL = URL_SERVICIOS + "/users/update";
-    return this.http.post(URL, { headers: headers}).pipe(
+    return this.http.post(URL, data, { headers: headers}).pipe(
       finalize(() => this.isLoadingSubject.next(false)),
     )
   }
