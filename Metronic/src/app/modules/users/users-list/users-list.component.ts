@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsersAddComponent } from '../users-add/users-add.component';
 import { UserService } from '../service/user.service';
 import { UsersEditComponent } from '../users-edit/users-edit.component';
+import { UsersDeleteComponent } from '../users-delete/users-delete.component';
 
 @Component({
   selector: 'app-users-list',
@@ -43,8 +44,6 @@ export class UsersListComponent implements OnInit {
   }
 
   editUser(user: any) {
-    console.log("soy edit user");
-    console.log(user);
     const modalRef = this.modalService.open(UsersEditComponent, { centered: true, size: 'md' });
 
     modalRef.componentInstance.editUser = user;
@@ -54,6 +53,22 @@ export class UsersListComponent implements OnInit {
       let index = this.userList.findIndex((item: any) => item._id == user._id);
       if(index != -1){
         this.userList[index] = user;
+      }
+    })
+  }
+
+  deleteUser(user:any){
+    const modalRef = this.modalService.open(UsersDeleteComponent, { centered: true, size: 'md' });
+
+    modalRef.componentInstance.dUser = user;
+
+    modalRef.componentInstance.userD.subscribe((user: any) => {
+
+      let index = this.userList.findIndex((item: any) => item._id == user._id);
+
+      if(index != -1){  
+        console.log("Encontro el usuario index: "+ index);
+        this.userList.splice(index, 1);
       }
     })
   }

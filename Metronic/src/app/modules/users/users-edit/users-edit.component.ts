@@ -68,15 +68,9 @@ export class UsersEditComponent implements OnInit{
         console.log(value);
         this.userE.emit(value.user);
         this.modal.close();
+        this.toastr.success("The user was successfully updated", "Success:");
       }
-    })
-    // this.userService.editUser(formData).subscribe({
-    //   next: (value:any) => {
-    //     console.log(value);
-    //     this.userE.emit(value.user);
-    //     this.modal.close();
-    //   }
-    // })
+    });
   }
 
   processAvatar($event: any) {

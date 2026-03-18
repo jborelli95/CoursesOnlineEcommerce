@@ -1,1 +1,64 @@
-<p>users-delete works!</p>
+<!--begin::Modal content-->
+<div class="modal-content">
+    <!--begin::Modal header-->
+    <div class="modal-header" id="kt_modal_add_user_header">
+        <!--begin::Modal title-->
+        <h2 class="fw-bolder d-flex justify-content-center w-100">Delete User</h2>
+        <!--end::Modal title-->
+        <!--begin::Close-->
+        <div class="btn btn-icon btn-sm btn-active-icon-primary" (click)="modalClose()">
+            <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+            <span class="svg-icon svg-icon-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)"
+                        fill="currentColor" />
+                    <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)"
+                        fill="currentColor" />
+                </svg>
+            </span>
+            <!--end::Svg Icon-->
+        </div>
+        <!--end::Close-->
+    </div>
+    <!--end::Modal header-->
+    <!--begin::Modal body-->
+    <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+        <div class="d-flex justify-content-center align-items-center">
+            <!--begin:: Avatar -->
+            <div class="symbol symbol-circle symbol-50px overflow-hidden me-5">
+                <a href="#" onclick="return false">
+                    <div class="symbol-label" *ngIf="!dUser.avatar">
+                        <img src="assets/media/avatars/300-6.jpg" alt="Emma Smith" class="w-100" />
+                    </div>
+                    <div class="symbol-label" *ngIf="dUser.avatar">
+                        <img [src]="dUser.avatar" alt="User avatar" class="w-100" />
+                    </div>
+                </a>
+            </div>
+            <!--end::Avatar-->
+            <div>
+                <h2>{{ dUser.name + ' ' + (dUser.surname ? dUser.surname: '')}}</h2>
+            </div>
+        </div>
+        <div class="mt-5 d-flex justify-content-center text-center align-items-center">
+            <p class="text-danger">
+                Are you sure about deleting this user: {{dUser.email}}? <br>
+                Once you delte it. It cannot be recovered
+            </p>
+        </div>
+        <!--begin::Actions-->
+        <div class="text-center pt-15">
+            <button type="button" class="btn btn-light me-3" (click)="modalClose()">
+                Close
+            </button>
+            <button type="button" class="btn btn-danger" (click)="deleteUser()">
+                <span class="indicator-label">Delete</span>
+                <!-- <span class="indicator-progress">Please wait...
+            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span> -->
+            </button>
+        </div>
+        <!--end::Actions-->
+    </div>
+    <!--end::Modal body-->
+</div>
+<!--end::Modal content-->

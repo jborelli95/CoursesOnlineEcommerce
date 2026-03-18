@@ -66,6 +66,7 @@ export class UsersAddComponent {
         console.log(value);
         this.userC.emit(value.user);
         this.modal.close();
+        this.toastr.success("The user was successfully created", "Success:");
       }
     })
 
