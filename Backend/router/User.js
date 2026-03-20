@@ -18,10 +18,10 @@ router.post("/login", userController.login);
 router.post("/login_admin", userController.login_admin);
 
 //CRUD user
-router.post("/register_admin", path ,userController.register_admin);
-router.post("/update", path, userController.update);
-router.get('/list', userController.list);
-router.delete('/delete/:id', userController.remove);
+router.post("/register_admin", [auth.verifyAdmin, path] ,userController.register_admin);
+router.post("/update", [auth.verifyAdmin, path], userController.update);
+router.get('/list',[auth.verifyAdmin], userController.list);
+router.delete('/delete/:id',[auth.verifyAdmin], userController.remove);
 
 router.get("/user-image/:img", userController.get_image);
 

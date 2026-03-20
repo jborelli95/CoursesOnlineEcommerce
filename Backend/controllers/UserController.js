@@ -233,13 +233,26 @@ export default {
   list: async (req, res) => {
     try {
       //localhost:3000?search='user_name'
-      var search = req.query.search;
-      let users = await models.User.find({
-        $or: [
+      let search = req.query.search;
+      let role = req.query.role;
+      let filter = [];
+
+      if(search){
+        filter = [
           { 'name': new RegExp(search, "i") },
           { 'surname': new RegExp(search, "i") },
           { 'email': new RegExp(search, "i") },
-        ],
+        ];
+      }
+
+      if(role){
+        filter.push({ 
+          'role': new RegExp(role, "i") 
+        })
+      }
+      
+      let users = await models.User.find({
+        $or: filter,
         "role": {$in: ["Administrator", "Instructor"]}
       }).sort({ createdAt: -1 });
 
