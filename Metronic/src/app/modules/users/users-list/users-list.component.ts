@@ -14,6 +14,8 @@ export class UsersListComponent implements OnInit {
 
   userList: any = [];
   isLoading: any;
+  search:string = "";
+  role:string = "";
 
   constructor(
     private modalService: NgbModal,
@@ -22,16 +24,8 @@ export class UsersListComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = this.userService.isLoading$;
-    this.userService.usersList().subscribe({
-      next: (v: any) => {
-        this.userList = v.users_list;
-      }
-    });
-
-    setTimeout(() => {
-      console.log(this.userList);
-      console.log(this.userList.length);
-    }, 50);
+    
+    this.listUsers();
   }
 
   registerUser() {
@@ -71,5 +65,13 @@ export class UsersListComponent implements OnInit {
         this.userList.splice(index, 1);
       }
     })
+  }
+
+  listUsers(){
+    this.userService.usersList(this.search, this.role).subscribe({
+      next: (v: any) => {
+        this.userList = v.users_list;
+      }
+    });
   }
 }

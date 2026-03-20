@@ -35,7 +35,7 @@ export default {
     const response = await token.decode(req.headers.token);
 
     if (response) {
-      if (response.rol == "admin") {
+      if (response.role == "Administrator") {
         next();
       } else {
         res.status(403).send({
