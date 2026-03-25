@@ -1,5 +1,4 @@
 import models from "../models/index.js";
-import bcrypt from "bcryptjs";
 import token from "../services/token.js";
 import fs from "fs";
 import path from "path";
@@ -87,16 +86,16 @@ export default {
     try {
       let search = req.query.search;
 
-      const categoriesList = await models.Category.find({
+      let categoriesList = await models.Category.find({
         $or: [{ title: new RegExp(search, "i") }],
       }).sort({ createdAt: -1 });
 
       categoriesList = await categoriesList.map((category) => {
         return resource.Category.api_resource_category(category);
-      })
+      });
 
       res.status(200).json({
-        categoires: categoriesList,
+        categories: categoriesList,
       });
     } catch (error) {
       console.log(error);

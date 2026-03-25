@@ -62,7 +62,7 @@ export class CategoryService {
 
     const URL = URL_SERVICIOS + "/categories/list" + link;
     console.log(URL);
-    return this.http.get(URL, {
+   return this.http.get(URL, {
       headers: headers
     }).pipe(
       finalize(() => this.isLoadingSubject.next(false)),
