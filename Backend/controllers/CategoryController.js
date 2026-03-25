@@ -32,7 +32,7 @@ export default {
       let newCategory = await models.Category.create(req.body);
 
       res.status(200).json({
-        category: newCategory,
+        category: resource.Category.api_resource_category(newCategory),
         message: "New category created",
       });
     } catch (error) {
@@ -66,13 +66,14 @@ export default {
         req.body.image = image_name;
       }
 
-      let updateCategory = await models.Category.findByIdAndUpdate(
+      let updatedCategory = await models.Category.findByIdAndUpdate(
         { _id: req.body._id },
         req.body,
+        { new: true }
       );
 
       res.status(200).json({
-        category: updateCategory,
+        category: resource.Category.api_resource_category(updatedCategory),
         message: "The category updated successfully",
       });
     } catch (error) {
@@ -89,6 +90,10 @@ export default {
       const categoriesList = await models.Category.find({
         $or: [{ title: new RegExp(search, "i") }],
       }).sort({ createdAt: -1 });
+
+      categoriesList = await categoriesList.map((category) => {
+        return resource.Category.api_resource_category(category);
+      })
 
       res.status(200).json({
         categoires: categoriesList,
@@ -115,4 +120,30 @@ export default {
       });
     }
   },
+
+  getImage: async (req, res) => {
+      try {
+        var img = req.params["img"];
+        if (!img) {
+          res.status(500).send({
+            message: "Error getting img from params",
+          });
+        } else {
+          fs.stat("./uploads/categories/" + img, function (err) {
+            if (!err) {
+              let path_img = "./uploads/categories/" + img;
+              res.status(200).sendFile(path.resolve(path_img));
+            } else {
+              let path_img = "./uploads/default.jpg";
+              res.status(200).sendFile(path.resolve(path_img));
+            }
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        res.status(500).send({
+          message: "Error ocurred when try get an image",
+        });
+      }
+    },
 };

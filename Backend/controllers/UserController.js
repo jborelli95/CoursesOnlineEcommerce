@@ -216,10 +216,10 @@ export default {
       }
 
       //We use find one by id and update from mongoose
-      const User = await models.User.findByIdAndUpdate({ _id: _id }, req.body);
-      const nUser = await models.User.findById( { _id: _id } );
+      const User = await models.User.findByIdAndUpdate({ _id: _id }, req.body, { new: true });
+
       res.status(200).json({
-        user: resource.User.api_resource_user(nUser),
+        user: resource.User.api_resource_user(User),
         message: 'The user was successfully updated'
       });
     } catch (error) {

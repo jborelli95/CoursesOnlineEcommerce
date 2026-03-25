@@ -8,7 +8,12 @@ var path = multiparty({uploadDir : './uploads/category'});
 
 const router = express.Router();
 
+/**categories/register */
 router.post("/register", [auth.verifyAdmin, path], CategoryController.register);
 router.post("/update", [auth.verifyAdmin, path], CategoryController.register);
 router.get("/list", [auth.verifyAdmin], CategoryController.list);
 router.delete("/remove/:id", [auth.verifyAdmin], CategoryController.remove);
+
+router.get('/image-category/:img', CategoryController.getImage);
+
+export default router;

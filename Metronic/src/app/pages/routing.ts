@@ -63,6 +63,11 @@ const Routing: Routes = [
       import('../modules/users/users.module').then((m) => m.UsersModule),
   },
   {
+    path: 'categories',
+    loadChildren: () => 
+      import('../modules/category/category.module').then((m) => m.CategoryModule),
+  },
+  {
     path: '',
     redirectTo: '/dashboard',
     pathMatch: 'full',
