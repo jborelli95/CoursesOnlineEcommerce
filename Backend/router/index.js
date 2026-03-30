@@ -1,6 +1,7 @@
 import express from 'express'
 import User from './User.js'
 import Category from './Category.js'
+import Course from './Course.js'
 
 //http://localhost:3000/api
 const router = express.Router();
@@ -9,7 +10,10 @@ const router = express.Router();
 router.use('/users', User);
 
 //http://localhost:3000/api/categories
-router.use('/categories', Category)
+router.use('/categories', Category);
+
+//http://localhost:3000/api/courses
+router.use('/courses', Course);
 
 
 export default router;
