@@ -42,7 +42,7 @@ export class CategoryListComponent {
     modalRef.componentInstance.editCategory = category;
 
     modalRef.componentInstance.categoryE.subscribe((category: any) => {
-      console.log(category);
+
       let index = this.categoriesList.findIndex((item: any) => item._id == category._id);
       if (index != -1) {
         this.categoriesList[index] = category;
@@ -53,14 +53,13 @@ export class CategoryListComponent {
   deleteCategory(category: any) {
     const modalRef = this.modalService.open(CategoryDeleteComponent, { centered: true, size: 'md' });
 
-    modalRef.componentInstance.editCategory = category;
+    modalRef.componentInstance.dCategory = category;
 
     modalRef.componentInstance.categoryD.subscribe((category: any) => {
 
       let index = this.categoriesList.findIndex((item: any) => item._id == category._id);
 
       if (index != -1) {
-        console.log("Encontro el usuario index: " + index);
         this.categoriesList.splice(index, 1);
       }
     })
