@@ -64,8 +64,13 @@ const Routing: Routes = [
   },
   {
     path: 'categories',
-    loadChildren: () => 
+    loadChildren: () =>
       import('../modules/category/category.module').then((m) => m.CategoryModule),
+  },
+  {
+    path: 'courses',
+    loadChildren: () => 
+      import('../modules/courses/courses.module').then((m) => m.CoursesModule),
   },
   {
     path: '',
