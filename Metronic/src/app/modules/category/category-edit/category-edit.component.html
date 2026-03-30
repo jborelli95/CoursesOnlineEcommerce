@@ -83,13 +83,13 @@
                     <!--end::Label-->
                     <!--begin::Input-->
                     <input type="text" name="title" class="form-control form-control-solid mb-3 mb-lg-0" placeholder=""
-                        formControlName="name" />
+                        formControlName="title" />
                     <!--end::Input-->
-                    <div *ngIf="editForm.get('name')?.touched && editForm.get('name')?.invalid" style="color: red;">
-                        <span *ngIf="editForm.get('name')?.hasError('required')">
-                            Name is required
+                    <div *ngIf="editForm.get('title')?.touched && editForm.get('title')?.invalid" style="color: red;">
+                        <span *ngIf="editForm.get('title')?.hasError('required')">
+                            Title is required
                         </span>
-                        <span *ngIf="editForm.get('name')?.hasError('minlength')">
+                        <span *ngIf="editForm.get('title')?.hasError('minlength')">
                             Minimum 2 characters
                         </span>
                     </div>
