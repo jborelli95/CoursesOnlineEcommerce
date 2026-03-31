@@ -24,6 +24,10 @@ const courseSchema = new Schema(
       type: Number,
       required: true,
     },
+    price_pesos:{
+      type:Number,
+      required:true
+    },
     image: {
       type: String,
       maxlength: 250,

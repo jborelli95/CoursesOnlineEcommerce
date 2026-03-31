@@ -23,6 +23,7 @@ export default {
       level: course.level,
       language: course.language,
       price_usd: course.price_usd,
+      price_pesos: course.price_pesos,
       requirements: JSON.parse(course.requirements),
       who_is_it_for: JSON.parse(course.who_is_it_for),
     };
