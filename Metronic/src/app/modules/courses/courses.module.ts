@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { CoursesRoutingModule } from './courses-routing.module';
 import { CoursesComponent } from './courses.component';
 import { CourseAddComponent } from './course-add/course-add.component';
@@ -11,6 +10,7 @@ import { NgbModalModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InlineSVGModule } from 'ng-inline-svg-2';
+import { CKEditorModule } from 'ckeditor4-angular';
 
 
 @NgModule({
@@ -30,6 +30,7 @@ import { InlineSVGModule } from 'ng-inline-svg-2';
     ReactiveFormsModule,
     InlineSVGModule,
     NgbModalModule,
+    CKEditorModule,
   ]
 })
 export class CoursesModule { }

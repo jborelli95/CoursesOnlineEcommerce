@@ -17,6 +17,8 @@ router.get("/list", [auth.verifyAdmin], CourseController.list);
 //http://localhost:3000/api/courses/remove/:id
 router.delete("/remove/:id", [auth.verifyAdmin], CourseController.remove);
 //http://localhost:3000/api/courses/image-course/:img
-router.get("/image-course/:img", CourseController.getImage)
+router.get("/image-course/:img", CourseController.getImage);
+//http://localhost:3000/api/courses/image-course/:img
+router.get("/config_all", [auth.verifyAdmin], CourseController.config_all);
 
 export default router;

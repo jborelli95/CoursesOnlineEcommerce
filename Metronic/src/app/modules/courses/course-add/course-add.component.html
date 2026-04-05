@@ -1,3 +1,4 @@
+<span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
 <!--begin::Contacts-->
 <div class="card card-flush h-lg-100" id="kt_contacts_main me-5 ms-5">
     <!--begin::Card header-->
@@ -11,7 +12,7 @@
                 <span class="path3"></span>
             </i>
             <!--end::Svg Icon-->
-            <h2>Add New Contact</h2>
+            <h2>Add New Course</h2>
         </div>
         <!--end::Card title-->
     </div>
@@ -19,7 +20,7 @@
     <!--begin::Card body-->
     <div class="card-body pt-5">
         <!--begin::Form-->
-        <form id="kt_ecommerce_settings_general_form" class="form" action="#">
+        <form id="kt_ecommerce_settings_general_form" class="form" action="#" [formGroup]="registerCourseForm" (ngSubmit)="submit()">
             <!--begin::Input group Title and subTitle-->
             <div class="row mb-7">
                 <div class="col">
@@ -32,7 +33,7 @@
                     </label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" class="form-control form-control-solid" name="title" value="">
+                    <input type="text" class="form-control form-control-solid" name="title" value="" formControlName="title">
                     <!--end::Input-->
                 </div>
                 <div class="col">
@@ -70,6 +71,10 @@
                     <select name="category" id="category" class="form-control form-select-solid fw-bolder">
                         <option disabled selected hidden>Select an option</option>
                         <option value="">All</option>
+                        <ng-container>
+                            <option *ngFor="let category of categoriesList" [value]="category._id">{{category.title}}
+                            </option>
+                        </ng-container>
                     </select>
                 </div>
             </div>
@@ -104,6 +109,9 @@
                     <select name="instructor" id="instructor" class="form-control form-select-solid fw-bolder">
                         <option disabled selected hidden>Select an option</option>
                         <option value="">All</option>
+                        <ng-container *ngFor="let user of usersList">
+                            <option [value]="user._id">{{user.name + ' ' + user.surname}}</option>
+                        </ng-container>
                     </select>
                 </div>
             </div>
@@ -118,7 +126,7 @@
                     </div>
                 </div>
                 <div class="col">
-
+                    <img [src]="preview_image" width="100%" alt="Cover image for course" *ngIf="preview_image">
                 </div>
             </div>
 
@@ -129,8 +137,9 @@
                         <label class="fs-6 fw-bold form-label mt-3 d-flex" for="requeriments">
                             <span class="required me-2">Requeriments:</span>
                         </label>
-                        <input type="text" class="form-control form-control-solid" name="requeriments">
-                        <button class="btn btn-primary ms-2">+</button>
+                        <input type="text" class="form-control form-control-solid" name="requirement_text"
+                            formControlName="requirement_text">
+                        <button type="button" class="btn btn-primary ms-2" (click)="addRequirement()">+</button>
                     </div>
                 </div>
                 <div class="col">
@@ -146,27 +155,19 @@
                                     nihil id quam minima nobis porro officia veniam reiciendis ...
                                 </td>
                                 <td class="fs-6">
-                                    <button class="btn btn-sm btn-danger">-</button>
+                                    <button type="button" class="btn btn-sm btn-danger">-</button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="fs-6">
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus repellat expedita
-                                    nihil id quam minima nobis porro officia veniam reiciendis ...
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-danger">-</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus repellat expedita
-                                    nihil id quam minima nobis porro officia veniam reiciendis ...
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-danger">-</button>
-                                </td>
-                            </tr>
+                            <ng-container *ngFor="let requirement of requirements; let i = index">
+                                <tr>
+                                    <td class="fs-6">
+                                        {{requirement}}
+                                    </td>
+                                    <td class="fs-6">
+                                        <button type="button" class="btn btn-sm btn-danger" (click)="deleteRequirements(i)">-</button>
+                                    </td>
+                                </tr>
+                            </ng-container>
                         </tbody>
                     </table>
                 </div>
@@ -179,8 +180,8 @@
                         <label class="fs-6 fw-bold form-label mt-3 d-flex" for="who_is_it_for">
                             <span class="required me-2 text-nowrap">Who is it for?:</span>
                         </label>
-                        <input type="text" class="form-control form-control-solid" name="who_is_it_for">
-                        <button class="btn btn-primary ms-2">+</button>
+                        <input type="text" class="form-control form-control-solid" name="who_is_it_for_text" formControlName="who_is_it_for_text">
+                        <button type="button" class="btn btn-primary ms-2" (click)="addWhoIsItFor()">+</button>
                     </div>
                 </div>
                 <div class="col">
@@ -196,45 +197,40 @@
                                     nihil id quam minima nobis porro officia veniam reiciendis ...
                                 </td>
                                 <td class="fs-6">
-                                    <button class="btn btn-sm btn-danger">-</button>
+                                    <button type="button" class="btn btn-sm btn-danger">-</button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="fs-6">
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus repellat expedita
-                                    nihil id quam minima nobis porro officia veniam reiciendis ...
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-danger">-</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus repellat expedita
-                                    nihil id quam minima nobis porro officia veniam reiciendis ...
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-danger">-</button>
-                                </td>
-                            </tr>
+                            <ng-container *ngFor="let whoIsItFor of who_is_it_for; let i = index">
+                                <tr>
+                                    <td class="fs-6">
+                                        {{whoIsItFor}}
+                                    </td>
+                                    <td class="fs-6">
+                                        <button type="button" class="btn btn-sm btn-danger" (click)="deleteWhoIsItFor(i)">-</button>
+                                    </td>
+                                </tr>
+                            </ng-container>
                         </tbody>
                     </table>
                 </div>
             </div>
 
             <!--begin::Input group-->
-            <div class="fv-row mb-7">
+            <div class="row mb-7">
                 <!--begin::Label-->
-                <label class="fs-6 fw-bold form-label mt-3">
-                    <span>Description:</span>
-                    <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title=""
-                        data-bs-original-title="Enter any additional notes about the contact (optional)."
-                        aria-label="Enter any additional notes about the contact (optional)."></i>
-                </label>
-                <!--end::Label-->
-                <!--begin::Input-->
-                <textarea class="form-control form-control-solid" rows="4" style="height:100%;" name="description"></textarea>
-                <!--end::Input-->
+                <div class="col-8">
+                    <label class="fs-6 fw-bold form-label mt-3">
+                        <span>Description:</span>
+                        <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title=""
+                            data-bs-original-title="Enter any additional notes about the contact (optional)."
+                            aria-label="Enter any additional notes about the contact (optional)."></i>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Input-->
+                    <!-- <textarea class="form-control form-control-solid" rows="4" style="height:100%;" name="description"></textarea> -->
+                    <!--end::Input-->
+                    <ckeditor [data]="description" (change)="onChange($event)" [config]="{ versionCheck: false }"></ckeditor>
+                </div>
             </div>
             <!--end::Input group-->
             <!--begin::Separator-->

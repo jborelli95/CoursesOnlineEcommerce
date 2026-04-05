@@ -96,7 +96,7 @@ export default {
 
       res.status(200).json({
         courses_list: coursesList, // we need api resource
-      })
+      });
     } catch (error) {
       console.log(error);
       res.status(500).send({
@@ -104,14 +104,48 @@ export default {
       });
     }
   },
-  remove: async (req, res) => { 
+  config_all: async (req, res) => {
+    try {
+      let categoriesList = await models.Category.find({ state: 1 });
+
+      let usersList = await models.User.find({ state: 1, role: "Instructor" });
+
+      categoriesList = categoriesList.map((category) => {
+        return {
+          _id: category._id,
+          title: category.title,
+        };
+      });
+
+      usersList = usersList.map((user) => {
+        return {
+          _id: user._id,
+          name: user.name,
+          surname: user.surname,
+        };
+      });
+
+      res.status(200).json({
+        categories_list: categoriesList,
+        users_list: usersList,
+      })
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({
+        message: "Error 500: Error in getting config",
+      });
+    }
+  },
+  remove: async (req, res) => {
     try {
       //The idea is we cant delete courses with one sell realized...
-      let course = await models.Course.findByIdAndDelete({_id : req.params.id});
+      let course = await models.Course.findByIdAndDelete({
+        _id: req.params.id,
+      });
 
       res.status(200).send({
-        message:'The course was deleted successfully'
-      })
+        message: "The course was deleted successfully",
+      });
     } catch (error) {
       console.log(error);
       res.status(500).send({
