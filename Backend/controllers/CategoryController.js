@@ -120,7 +120,6 @@ export default {
       });
     }
   },
-
   getImage: async (req, res) => {
     try {
       var img = req.params["img"];
