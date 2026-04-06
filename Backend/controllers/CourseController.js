@@ -2,10 +2,12 @@ import models from "../models/index.js";
 import fs from "fs";
 import path from "path";
 import resource from "../resources/index.js";
+import { title } from "process";
 
 export default {
   register: async (req, res) => {
     try {
+      
       const isValidCourse = await models.Course.findOne({
         title: req.body.title,
       });
@@ -17,10 +19,14 @@ export default {
         });
       }
 
+      let title = req.body.title;
+
       req.body.slug = title
         .toLowerCase()
         .replace(/ /g, "-")
         .replace(/[^\w-]+/g, "");
+
+      console.log(req.body.slug);
 
       if (req.files.cover) {
         let img_path = req.files.cover.path;
@@ -128,7 +134,7 @@ export default {
       res.status(200).json({
         categories_list: categoriesList,
         users_list: usersList,
-      })
+      });
     } catch (error) {
       console.log(error);
       res.status(500).send({

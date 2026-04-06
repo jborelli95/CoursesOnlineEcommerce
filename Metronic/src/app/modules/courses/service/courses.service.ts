@@ -20,9 +20,9 @@ export class CoursesService {
     this.isLoading$ = this.isLoadingSubject.asObservable();
   }
 
-  configAll(){
+  configAll() {
     this.isLoadingSubject.next(true)
-    let headers = new HttpHeaders({'token': this.authservice.token});
+    let headers = new HttpHeaders({ 'token': this.authservice.token });
     let url = URL_SERVICIOS + "/courses/config_all";
     return this.http.get(url, {
       headers: headers
@@ -30,4 +30,56 @@ export class CoursesService {
       finalize(() => this.isLoadingSubject.next(false))
     )
   }
+
+  registerCourse(data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'token': this.authservice.token });
+    const url = URL_SERVICIOS + "/courses/register";
+    console.log(url);
+    console.log(data);
+    return this.http.post(url, data, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false)),
+    )
+  }
+
+  listCourses(search: any = null, state: any = null) {
+    this.isLoadingSubject.next(true);
+    const headers = new HttpHeaders({ 'token': this.authservice.token });
+    let link = "?T=";
+
+    if (search) {
+      link += "&search=" + search;
+    }
+
+    if (state) {
+      link += "&state=" + state;
+    }
+
+    const URL = URL_SERVICIOS + "/courses/list" + link;
+    
+    return this.http.get(URL, {
+      headers: headers
+    }).pipe(
+      finalize(() => this.isLoadingSubject.next(false)),
+    );
+  }
+
+  updateCourse(data: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'token': this.authservice.token });
+    const url = URL_SERVICIOS + "/courses/update";
+    return this.http.post(url, data, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false)),
+    )
+  }
+
+  removeCourse(course_id: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'token': this.authservice.token });
+    const url = `${URL_SERVICIOS}/courses/remove/${course_id}`;
+    return this.http.delete(url, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false)),
+    )
+  }
+
 }

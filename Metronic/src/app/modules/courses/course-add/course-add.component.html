@@ -33,7 +33,7 @@
                     </label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" class="form-control form-control-solid" name="title" value="" formControlName="title">
+                    <input type="text" class="form-control form-control-solid" name="title" formControlName="title">
                     <!--end::Input-->
                 </div>
                 <div class="col">
@@ -46,7 +46,7 @@
                     </label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" class="form-control form-control-solid" name="title" value="">
+                    <input type="text" class="form-control form-control-solid" name="sub_title" formControlName="sub_title">
                     <!--end::Input-->
                 </div>
             </div>
@@ -56,21 +56,20 @@
                     <label class="fs-6 fw-bold form-label mt-3" for="price_usd">
                         Price USD
                     </label>
-                    <input type="number" class="form-control form-control-solid" name="price_usd">
+                    <input type="number" class="form-control form-control-solid" name="price_usd" formControlName="price_usd">
                 </div>
                 <div class="col">
                     <label class="fs-6 fw-bold form-label mt-3" for="price_pesos">
                         Price ARG
                     </label>
-                    <input type="number" class="form-control form-control-solid" name="price_pesos">
+                    <input type="number" class="form-control form-control-solid" name="price_pesos" formControlName="price_pesos">
                 </div>
                 <div class="col">
                     <label class="fs-6 fw-bold form-label mt-3" for="category">
                         Category
                     </label>
-                    <select name="category" id="category" class="form-control form-select-solid fw-bolder">
+                    <select name="category" id="category" class="form-control form-select-solid fw-bolder" formControlName="category">
                         <option disabled selected hidden>Select an option</option>
-                        <option value="">All</option>
                         <ng-container>
                             <option *ngFor="let category of categoriesList" [value]="category._id">{{category.title}}
                             </option>
@@ -84,7 +83,7 @@
                     <label class="fs-6 fw-bold form-label mt-3" for="level">
                         Level
                     </label>
-                    <select name="level" id="level" class="form-control form-select-solid fw-bolder">
+                    <select name="level" id="level" class="form-control form-select-solid fw-bolder" formControlName="level">
                         <option disabled selected hidden>Select an option</option>
                         <option value="basic">Basic</option>
                         <option value="intermediate">Intermediate</option>
@@ -95,7 +94,7 @@
                     <label class="fs-6 fw-bold form-label mt-3" for="language">
                         Language
                     </label>
-                    <select name="language" id="language" class="form-control form-select-solid fw-bolder">
+                    <select name="language" id="language" class="form-control form-select-solid fw-bolder" formControlName="language">
                         <option disabled selected hidden>Select an option</option>
                         <option value="English">English</option>
                         <option value="Spanish">Spanish</option>
@@ -106,9 +105,8 @@
                     <label class="fs-6 fw-bold form-label mt-3" for="instructor">
                         Instructor
                     </label>
-                    <select name="instructor" id="instructor" class="form-control form-select-solid fw-bolder">
+                    <select name="instructor" id="instructor" class="form-control form-select-solid fw-bolder" formControlName="instructor">
                         <option disabled selected hidden>Select an option</option>
-                        <option value="">All</option>
                         <ng-container *ngFor="let user of usersList">
                             <option [value]="user._id">{{user.name + ' ' + user.surname}}</option>
                         </ng-container>
@@ -129,7 +127,7 @@
                     <img [src]="preview_image" width="100%" alt="Cover image for course" *ngIf="preview_image">
                 </div>
             </div>
-
+            
             <!--Load requeriments-->
             <div class="row mb-7">
                 <div class="col">

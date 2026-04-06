@@ -9,48 +9,56 @@ import { CoursesService } from '../service/courses.service';
   styleUrls: ['./course-add.component.scss']
 })
 export class CourseAddComponent implements OnInit {
+  //Register form group 
   registerCourseForm: FormGroup;
+  //For image upload
   file_image: any;
   preview_image: any;
+  //Show instructor and categorties
   usersList: any = [];
   categoriesList: any = [];
+  //Boolean observable for know when page is loading
   isLoading$: any;
+  //Description for ckeditor
   description: any = "";
+  /**requeriments and who is it for arrays */
   requirements: any = [];
-  //requirement_text: string = '';
   who_is_it_for: any = [];
-  //who_is_it_for_text: string = '';
 
   constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,
-    private coursesSerive: CoursesService,
+    private coursesService: CoursesService,
   ) {
     this.registerCourseForm = this.fb.group({
       title: ["", [Validators.required, Validators.minLength(2)]],
-      state: [null, [Validators.required]],
-      requirement_text:[""],
-      who_is_it_for_text:[""],
+      sub_title: ["", [Validators.required, Validators.minLength(3)]],
+      price_usd: [0, [Validators.required]],
+      price_pesos: [0, [Validators.required]],
+      category: ["", [Validators.required]],
+      level: ["", [Validators.required]],
+      language: ["", [Validators.required]],
+      instructor: ["", [Validators.required]],
+      state: [1],
+      requirement_text: [""],
+      who_is_it_for_text: [""],
     });
   }
 
   ngOnInit(): void {
-    this.isLoading$ = this.coursesSerive.isLoading$;
+    this.isLoading$ = this.coursesService.isLoading$;
 
-    this.coursesSerive.configAll().subscribe((value: any) => {
+    this.coursesService.configAll().subscribe((value: any) => {
       this.usersList = value.users_list;
       this.categoriesList = value.categories_list;
     });
 
-    setTimeout(() => {
-      console.log(this.categoriesList);
-      console.log(this.usersList);
-    }, 50);
+
   }
   processFile($event: any) {
     if ($event.target.files[0].type.indexOf("image") < 0) {
       console.log($event.target.files[0]);
-      this.toastr.error("Only files '.jpg, .png and .jpeg' accepted", "Error validation")
+      this.toastr.error("Only files '.jpg, .png and .jpeg' accepted", "Error validation");
       return;
     }
     console.log($event.target.files[0]);
@@ -61,26 +69,46 @@ export class CourseAddComponent implements OnInit {
     reader.onloadend = () => {
       this.preview_image = reader.result;
     }
-    this.coursesSerive.isLoadingSubject.next(true);
+    this.coursesService.isLoadingSubject.next(true);
     setTimeout(() => {
-      this.coursesSerive.isLoadingSubject.next(false);
+      this.coursesService.isLoadingSubject.next(false);
     }, 100);
   }
 
   submit() {
-    // if(this.registerCourseForm.invalid){
-    //   this.toastr.error("You need complete all the required fields", "Error ")
-    //   return
-    // }
-    console.log("submit");
-    console.log(this.description);
+    console.log(this.registerCourseForm.invalid);
+    if(this.registerCourseForm.invalid || !this.description || !this.requirements || !this.who_is_it_for){
+      this.toastr.error("You need complete all the required fields", "Error ")
+      return
+    }
+    
+    //New formdata where we will sotre all the necesary info to send to the backend
+    let formData = new FormData();
+    
+    formData.append("title", this.registerCourseForm.controls['title'].value);
+    formData.append("sub_title", this.registerCourseForm.controls['sub_title'].value);
+    formData.append("price_usd", this.registerCourseForm.controls['price_usd'].value);
+    formData.append("price_pesos", this.registerCourseForm.controls['price_pesos'].value);
+    formData.append("category", this.registerCourseForm.controls['category'].value);
+    formData.append("level", this.registerCourseForm.controls['level'].value);
+    formData.append("language", this.registerCourseForm.controls['language'].value);
+    formData.append("user", this.registerCourseForm.controls['instructor'].value);
+    formData.append("state", this.registerCourseForm.controls['state'].value);
+    formData.append("description", this.description);
+    formData.append("requirements", JSON.stringify(this.requirements));
+    formData.append("who_is_it_for", JSON.stringify(this.who_is_it_for));
+    formData.append("cover", this.file_image);
+    
+    this.coursesService.registerCourse(formData).subscribe((resp:any) => {
+      console.log(resp);
+    })
   }
 
   onChange($event: any) {
     this.description = $event.editor.getData();
   }
 
-  addRequirement() { 
+  addRequirement() {
     if (!this.registerCourseForm.controls['requirement_text'].value) {
       this.toastr.error("Requirement text is required", "Error adding requirement")
       return
@@ -89,20 +117,13 @@ export class CourseAddComponent implements OnInit {
     this.requirements.push(this.registerCourseForm.controls['requirement_text'].value);
 
     this.registerCourseForm.controls['requirement_text'].reset();
-    // setTimeout(() => {
-    //   this.registerCourseForm.controls['requirement_text'].reset();
-    //   this.coursesSerive.isLoadingSubject.next(true);
-    //   setTimeout(() => {
-    //     this.coursesSerive.isLoadingSubject.next(false);
-    //   }, 50);
-    // }, 50);
   }
 
   deleteRequirements(index: any) {
     this.requirements.splice(index, 1);
   }
 
-  addWhoIsItFor() { 
+  addWhoIsItFor() {
     if (!this.registerCourseForm.controls['who_is_it_for_text'].value) {
       this.toastr.error("Who is it for text is required", "Error");
       return
@@ -111,9 +132,6 @@ export class CourseAddComponent implements OnInit {
     this.who_is_it_for.push(this.registerCourseForm.controls['who_is_it_for_text'].value);
 
     this.registerCourseForm.controls['who_is_it_for_text'].reset();
-    // setTimeout(() => {
-    //   this.registerCourseForm.controls['who_is_it_for_text'].reset();
-    // }, 50);
   }
 
   deleteWhoIsItFor(index: any) {
