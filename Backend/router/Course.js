@@ -8,6 +8,7 @@ var path = multiparty({uploadDir : './uploads/courses'});
 
 const router = express.Router();
 
+console.log("Estoy en router de courses");
 //http://localhost:3000/api/courses/register
 router.post("/register", [auth.verifyAdmin, path], CourseController.register);
 //http://localhost:3000/api/courses/update
