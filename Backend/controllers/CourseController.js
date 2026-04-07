@@ -2,7 +2,7 @@ import models from "../models/index.js";
 import fs from "fs";
 import path from "path";
 import resource from "../resources/index.js";
-import { title } from "process";
+//import { title } from "process";
 
 export default {
   register: async (req, res) => {
@@ -60,6 +60,8 @@ export default {
           message_txt: "The course title is already exist",
         });
       }
+
+      let title = req.body.title;
 
       req.body.slug = title
         .toLowerCase()
@@ -161,7 +163,7 @@ export default {
   },
   getImage: async (req, res) => {
     try {
-      var img = req.params["img"];
+      let img = req.params["img"];
       if (!img) {
         res.status(500).send({
           message: "Error getting img from params",
@@ -182,6 +184,33 @@ export default {
       res.status(500).send({
         message: "Error ocurred when try get an image",
       });
+    }
+  },
+  getById: async (req, res) => {
+    try {
+      let course_id = req.params['id'];
+
+      const course = await models.Course.findById(course_id);
+
+      if(!course){
+        res.status(200).json({
+          message: 403,
+          message_txt: 'Error in getting course by id'
+        })
+      }
+
+      //console.log(course);
+
+      res.status(200).json({
+        course: resource.Course.api_resource_course(course),
+        message: 'Course getting successfuly',
+      });
+
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({
+        message: 'Error in getting course by id'
+      })
     }
   },
 };

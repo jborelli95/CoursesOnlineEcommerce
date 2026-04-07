@@ -31,6 +31,17 @@ export class CoursesService {
     )
   }
 
+  getCourseInfo(course_id:string) {
+    this.isLoadingSubject.next(true)
+    let headers = new HttpHeaders({ 'token': this.authservice.token });
+    let url = `${URL_SERVICIOS}/courses/get/${course_id}`;
+    return this.http.get(url, {
+      headers: headers
+    }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    )
+  }
+
   registerCourse(data: any) {
     this.isLoadingSubject.next(true);
     let headers = new HttpHeaders({ 'token': this.authservice.token });

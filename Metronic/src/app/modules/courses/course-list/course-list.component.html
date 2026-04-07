@@ -76,7 +76,7 @@
                             </td>
                             <td class="text-end">
 
-                                <a href="#" (click)="editCourse(course._id)"
+                                <a href="#" [routerLink]="['/courses/edit/', course._id]" routerLinkActive="router-link-active" 
                                     class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
                                     onclick="return false">
                                     <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
