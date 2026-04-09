@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CoursesService } from '../service/courses.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-add',
@@ -29,6 +30,7 @@ export class CourseAddComponent implements OnInit {
     private fb: FormBuilder,
     private toastr: ToastrService,
     private coursesService: CoursesService,
+    private router: Router,
   ) {
     this.registerCourseForm = this.fb.group({
       title: ["", [Validators.required, Validators.minLength(2)]],
@@ -101,7 +103,11 @@ export class CourseAddComponent implements OnInit {
     
     this.coursesService.registerCourse(formData).subscribe((resp:any) => {
       console.log(resp);
-    })
+    });
+
+    this.toastr.success("Course created successfully", "Success");
+
+    this.router.navigate(['courses/list']);
   }
 
   onChange($event: any) {
