@@ -54,22 +54,22 @@
             <div class="row mb-7">
                 <div class="col">
                     <label class="fs-6 fw-bold form-label mt-3" for="price_usd">
-                        Price USD
+                        <span class="required">Price USD</span>
                     </label>
                     <input type="number" class="form-control form-control-solid" name="price_usd" formControlName="price_usd">
                 </div>
                 <div class="col">
                     <label class="fs-6 fw-bold form-label mt-3" for="price_pesos">
-                        Price ARG
+                        <span class="required">Price ARG</span>
                     </label>
                     <input type="number" class="form-control form-control-solid" name="price_pesos" formControlName="price_pesos">
                 </div>
                 <div class="col">
                     <label class="fs-6 fw-bold form-label mt-3" for="category">
-                        Category
+                        <span class="required">Category</span>
                     </label>
                     <select name="category" id="category" class="form-control form-select-solid fw-bolder" formControlName="category">
-                        <option disabled selected hidden>Select an option</option>
+                        <option value="" disabled hidden>Select an option</option>
                         <ng-container>
                             <option *ngFor="let category of categoriesList" [value]="category._id">{{category.title}}
                             </option>
@@ -84,7 +84,7 @@
                         Level
                     </label>
                     <select name="level" id="level" class="form-control form-select-solid fw-bolder" formControlName="level">
-                        <option disabled selected hidden>Select an option</option>
+                        <option value="" disabled hidden>Select an option</option>
                         <option value="basic">Basic</option>
                         <option value="intermediate">Intermediate</option>
                         <option value="advanced">Advanced</option>
@@ -95,7 +95,7 @@
                         Language
                     </label>
                     <select name="language" id="language" class="form-control form-select-solid fw-bolder" formControlName="language">
-                        <option disabled selected hidden>Select an option</option>
+                        <option value="" disabled hidden>Select an option</option>
                         <option value="English">English</option>
                         <option value="Spanish">Spanish</option>
                         <option value="Portuguese">Portuguese</option>
@@ -106,7 +106,7 @@
                         Instructor
                     </label>
                     <select name="instructor" id="instructor" class="form-control form-select-solid fw-bolder" formControlName="instructor">
-                        <option disabled selected hidden>Select an option</option>
+                        <option value="" disabled hidden>Select an option</option>
                         <ng-container *ngFor="let user of usersList">
                             <option [value]="user._id">{{user.name + ' ' + user.surname}}</option>
                         </ng-container>
