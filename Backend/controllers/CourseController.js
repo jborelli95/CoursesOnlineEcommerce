@@ -11,13 +11,17 @@ const client_vimeo = new Vimeo(
   process.env.TOKEN_VIMEO,
 );
 
-async function uploadVideoVimeo(pathFile, videoMetaData) {
+async function uploadVideoVimeo(videoFilePath, videoMetaData) {
   return new Promise((resolve, reject) => {
     client_vimeo.upload(
-      pathFile,
+      videoFilePath,
       videoMetaData,
       function (url) {
         resolve("The video was uploaded successfully. URL: " + url);
+      },
+      function (bytesUploaded, bytesTotal) {
+        const percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
+        console.log('Progreso de subida: ' + percentage + '%');
       },
       function (error) {
         reject("Error trying upload a video. Error: " + error);
@@ -236,6 +240,8 @@ export default {
   uploadVimeo: async (req, res) => {
     try {
       let pathFile = req.files.video.path;
+      console.log(pathFile);
+      
       let videoMetaData = {
         name: "Test video",
         description: "Testing video for test coreect conection to vimeo  api",

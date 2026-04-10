@@ -2,9 +2,12 @@ import express from 'express';
 import auth from '../services/auth.js';
 import multiparty from 'connect-multiparty';
 import CourseController from '../controllers/CourseController.js';
+import multipart from 'connect-multiparty';
 
 
-var path = multiparty({uploadDir : './uploads/courses'});
+let path = multiparty({uploadDir : './uploads/courses'});
+
+let pathAux = multiparty();
 
 const router = express.Router();
 
@@ -23,6 +26,6 @@ router.get("/config_all", [auth.verifyAdmin], CourseController.config_all);
 //http://localhost:3000/api/courses/get/:course_id
 router.get("/get/:id", [auth.verifyAdmin], CourseController.getById);
 //http://localhost:3000/api/courses/upload/video
-router.post("/upload/video", [auth.verifyAdmin], CourseController.uploadVimeo);
+router.post("/upload/video", [auth.verifyAdmin, pathAux], CourseController.uploadVimeo);
 
 export default router;

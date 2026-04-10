@@ -191,6 +191,7 @@ export class CourseEditComponent implements OnInit {
       return;
     }
 
+    console.log(this.file_video);
     let formData = new FormData();
     formData.append("vimeo", this.file_video);
 
