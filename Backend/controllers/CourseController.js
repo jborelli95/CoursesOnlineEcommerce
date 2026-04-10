@@ -2,12 +2,33 @@ import models from "../models/index.js";
 import fs from "fs";
 import path from "path";
 import resource from "../resources/index.js";
-//import { title } from "process";
+import { Vimeo } from "@vimeo/vimeo";
+import "dotenv/config";
+
+const client_vimeo = new Vimeo(
+  process.env.CLIENT_ID_VIMEO,
+  process.env.CLIENT_SECRETS_VIMEO,
+  process.env.TOKEN_VIMEO,
+);
+
+async function uploadVideoVimeo(pathFile, videoMetaData) {
+  return new Promise((resolve, reject) => {
+    client_vimeo.upload(
+      pathFile,
+      videoMetaData,
+      function (url) {
+        resolve("The video was uploaded successfully. URL: " + url);
+      },
+      function (error) {
+        reject("Error trying upload a video. Error: " + error);
+      },
+    );
+  });
+}
 
 export default {
   register: async (req, res) => {
     try {
-      
       const isValidCourse = await models.Course.findOne({
         title: req.body.title,
       });
@@ -188,29 +209,52 @@ export default {
   },
   getById: async (req, res) => {
     try {
-      let course_id = req.params['id'];
+      let course_id = req.params["id"];
 
       const course = await models.Course.findById(course_id);
 
-      if(!course){
+      if (!course) {
         res.status(200).json({
           message: 403,
-          message_txt: 'Error in getting course by id'
-        })
+          message_txt: "Error in getting course by id",
+        });
       }
 
       //console.log(course);
 
       res.status(200).json({
         course: resource.Course.api_resource_course(course),
-        message: 'Course getting successfuly',
+        message: "Course getting successfuly",
       });
-
     } catch (error) {
       console.log(error);
       res.status(500).send({
-        message: 'Error in getting course by id'
-      })
+        message: "Error in getting course by id",
+      });
+    }
+  },
+  uploadVimeo: async (req, res) => {
+    try {
+      let pathFile = req.files.video.path;
+      let videoMetaData = {
+        name: "Test video",
+        description: "Testing video for test coreect conection to vimeo  api",
+        privacy: {
+          view: "anybody",
+        },
+      };
+      const result = await uploadVideoVimeo(pathFile, videoMetaData);
+
+      console.log(result);
+
+      res.status(200).json({
+        message: "The test was successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({
+        Error_message: "An error ocurred trying upload a video",
+      });
     }
   },
 };

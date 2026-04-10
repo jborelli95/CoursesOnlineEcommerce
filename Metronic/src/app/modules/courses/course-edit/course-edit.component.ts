@@ -31,6 +31,7 @@ export class CourseEditComponent implements OnInit {
   //For image upload
   file_image: any;
   preview_image: any;
+  file_video: any;
 
   constructor(
     private coursesService: CoursesService,
@@ -94,14 +95,14 @@ export class CourseEditComponent implements OnInit {
 
   submit() {
     console.log(this.editCourseForm.invalid);
-    if(this.editCourseForm.invalid || !this.description || !this.requirements || !this.who_is_it_for){
+    if (this.editCourseForm.invalid || !this.description || !this.requirements || !this.who_is_it_for) {
       this.toastr.error("You need complete all the required fields", "Error ");
       return
     }
-    
+
     //New formdata where we will sotre all the necesary info to send to the backend
     let formData = new FormData();
-    
+
     formData.append("title", this.editCourseForm.controls['title'].value);
     formData.append("sub_title", this.editCourseForm.controls['sub_title'].value);
     formData.append("price_usd", this.editCourseForm.controls['price_usd'].value);
@@ -116,8 +117,8 @@ export class CourseEditComponent implements OnInit {
     formData.append("who_is_it_for", JSON.stringify(this.who_is_it_for));
     formData.append("cover", this.file_image);
     formData.append("_id", this.course_id);
-    
-    this.coursesService.updateCourse(formData).subscribe((resp:any) => {
+
+    this.coursesService.updateCourse(formData).subscribe((resp: any) => {
       console.log(resp);
     });
 
@@ -178,5 +179,25 @@ export class CourseEditComponent implements OnInit {
     setTimeout(() => {
       this.coursesService.isLoadingSubject.next(false);
     }, 100);
+  }
+
+  processVideoFile($event: any) {
+    this.file_video = $event.target.files[0];
+  }
+
+  uploadVideoVimeo(){
+    if(!this.file_video){
+      this.toastr.error("Need upload a video", "Error");
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append("vimeo", this.file_video);
+
+    this.coursesService.uploadVideoVimeo(formData).subscribe(
+      (resp:any) => {
+        console.log(resp);
+      }
+    );
   }
 }

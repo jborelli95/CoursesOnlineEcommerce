@@ -8,7 +8,6 @@ var path = multiparty({uploadDir : './uploads/courses'});
 
 const router = express.Router();
 
-console.log("Estoy en router de courses");
 //http://localhost:3000/api/courses/register
 router.post("/register", [auth.verifyAdmin, path], CourseController.register);
 //http://localhost:3000/api/courses/update
@@ -23,5 +22,7 @@ router.get("/image-course/:img", CourseController.getImage);
 router.get("/config_all", [auth.verifyAdmin], CourseController.config_all);
 //http://localhost:3000/api/courses/get/:course_id
 router.get("/get/:id", [auth.verifyAdmin], CourseController.getById);
+//http://localhost:3000/api/courses/upload/video
+router.post("/upload/video", [auth.verifyAdmin], CourseController.uploadVimeo);
 
 export default router;

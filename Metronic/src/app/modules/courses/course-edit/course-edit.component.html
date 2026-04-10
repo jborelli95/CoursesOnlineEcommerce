@@ -230,6 +230,21 @@
                     <ckeditor [data]="description" (change)="onChange($event)" [config]="{ versionCheck: false }"></ckeditor>
                 </div>
             </div>
+
+            <!--Upload the course cover-->
+            <div class="row mb-7">
+                <div class="col-lg-6 col-md-6 col-sm-12 my-2">
+                    <label class="form-label">Sube tu imagen: *</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFile" accept=".mp4"
+                            (change)="processVideoFile($event)">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <button class="btn btn-sm btn-primary" (click)="uploadVideoVimeo()">Upload</button>
+                </div>
+            </div>
             <!--end::Input group-->
             <!--begin::Separator-->
             <div class="separator mb-6"></div>

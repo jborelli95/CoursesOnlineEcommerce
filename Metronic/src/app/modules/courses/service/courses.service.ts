@@ -31,7 +31,7 @@ export class CoursesService {
     )
   }
 
-  getCourseInfo(course_id:string) {
+  getCourseInfo(course_id: string) {
     this.isLoadingSubject.next(true)
     let headers = new HttpHeaders({ 'token': this.authservice.token });
     let url = `${URL_SERVICIOS}/courses/get/${course_id}`;
@@ -67,7 +67,7 @@ export class CoursesService {
     }
 
     const URL = URL_SERVICIOS + "/courses/list" + link;
-    
+
     return this.http.get(URL, {
       headers: headers
     }).pipe(
@@ -93,4 +93,14 @@ export class CoursesService {
     )
   }
 
+  uploadVideoVimeo(videoData: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'token': this.authservice.token });
+    const url = URL_SERVICIOS + "/courses/upload/video";
+    console.log(url);
+    console.log(videoData);
+    return this.http.post(url, videoData, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false)),
+    )
+  }
 }
