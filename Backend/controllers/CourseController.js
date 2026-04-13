@@ -17,14 +17,21 @@ async function uploadVideoVimeo(videoFilePath, videoMetaData) {
       videoFilePath,
       videoMetaData,
       function (url) {
-        resolve("The video was uploaded successfully. URL: " + url);
+        resolve({
+          message: 200,
+          value: url,
+        });
       },
       function (bytesUploaded, bytesTotal) {
         const percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
-        console.log('Progreso de subida: ' + percentage + '%');
+        console.log("Progreso de subida: " + percentage + "%");
       },
       function (error) {
-        reject("Error trying upload a video. Error: " + error);
+        console.log("Error trying upload a video. Error: " + error);
+        reject({
+          message: 403,
+          message_txt: 'Error trying upload the video to vimeo'
+        });
       },
     );
   });
@@ -240,22 +247,42 @@ export default {
   uploadVimeo: async (req, res) => {
     try {
       let pathFile = req.files.video.path;
+      console.log("path file of video: ");
       console.log(pathFile);
-      
+
       let videoMetaData = {
         name: "Test video",
-        description: "Testing video for test coreect conection to vimeo  api",
+        description: "Testing video for test correct conection to vimeo api",
         privacy: {
           view: "anybody",
         },
       };
       const result = await uploadVideoVimeo(pathFile, videoMetaData);
+      let vimeo_id_result = "";
 
-      console.log(result);
+      if (result.message == 403) {
+        console.log(result);
+        res.status(500).send({
+          Error_message: "An error ocurred trying upload a video",
+        });
+      } else {
+        console.log(result);
+        /**Valueo of success upload video to vimeo return a string like: /videos/1234456(video vimeo id) */
+        let array = result.value.split("/");
+        // array = ["", "videos", "1234456"]
+        // We get vimeo vidoe id
+        vimeo_id_result = array[2];
 
-      res.status(200).json({
-        message: "The test was successfully",
-      });
+        let course = await models.Course.findByIdAndUpdate(
+          { _id: req.body._id },
+          {
+            vimeo_id: vimeo_id_result,
+          },
+        );
+        res.status(200).json({
+          message: "The test was successfully",
+        });
+      }
     } catch (error) {
       console.log(error);
       res.status(500).send({
