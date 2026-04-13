@@ -3,7 +3,7 @@ import { CoursesService } from '../service/courses.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { languages } from 'prismjs';
 
 @Component({
@@ -32,6 +32,8 @@ export class CourseEditComponent implements OnInit {
   file_image: any;
   preview_image: any;
   file_video: any;
+  loadVideo:boolean = true;
+  link_video_vimeo:any = null;
 
   constructor(
     private coursesService: CoursesService,
@@ -39,6 +41,7 @@ export class CourseEditComponent implements OnInit {
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private router: Router,
+    private sanitizer: DomSanitizer,
   ) {
     this.editCourseForm = this.fb.group({
       title: ["", [Validators.required, Validators.minLength(2)]],
@@ -83,6 +86,9 @@ export class CourseEditComponent implements OnInit {
 
         // Imagen preview
         this.preview_image = this.course.image;
+
+        //video trailer of vimeo
+        this.link_video_vimeo = this.course.vimeo_id;
       }
     });
 
@@ -193,12 +199,20 @@ export class CourseEditComponent implements OnInit {
 
     console.log(this.file_video);
     let formData = new FormData();
-    formData.append("vimeo", this.file_video);
+    formData.append("video", this.file_video);
+    formData.append("_id", this.course_id);
+    this.loadVideo = false;
 
     this.coursesService.uploadVideoVimeo(formData).subscribe(
       (resp:any) => {
         console.log(resp);
+        this.loadVideo = true;
+        this.toastr.error("Video trailer uploaded successfully", "Success");
       }
     );
+  }
+
+  urlVideo(){
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.link_video_vimeo);
   }
 }

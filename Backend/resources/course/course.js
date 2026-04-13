@@ -19,7 +19,7 @@ export default {
       },
       sub_title: course.sub_title,
       description: course.description,
-      vimeo_id: course.vimeo_id,
+      vimeo_id: course.vimeo_id ? `https://player.vimeo.com/video/${course.vimeo_id}` : null,
       level: course.level,
       language: course.language,
       price_usd: course.price_usd,

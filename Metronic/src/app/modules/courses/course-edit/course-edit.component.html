@@ -20,7 +20,8 @@
     <!--begin::Card body-->
     <div class="card-body pt-5">
         <!--begin::Form-->
-        <form id="kt_ecommerce_settings_general_form" class="form" action="#" [formGroup]="editCourseForm" (ngSubmit)="submit()">
+        <form id="kt_ecommerce_settings_general_form" class="form" action="#" [formGroup]="editCourseForm"
+            (ngSubmit)="submit()">
             <!--begin::Input group Title and subTitle-->
             <div class="row mb-7">
                 <div class="col">
@@ -46,7 +47,8 @@
                     </label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" class="form-control form-control-solid" name="sub_title" formControlName="sub_title">
+                    <input type="text" class="form-control form-control-solid" name="sub_title"
+                        formControlName="sub_title">
                     <!--end::Input-->
                 </div>
             </div>
@@ -56,19 +58,22 @@
                     <label class="fs-6 fw-bold form-label mt-3" for="price_usd">
                         Price USD
                     </label>
-                    <input type="number" class="form-control form-control-solid" name="price_usd" formControlName="price_usd">
+                    <input type="number" class="form-control form-control-solid" name="price_usd"
+                        formControlName="price_usd">
                 </div>
                 <div class="col">
                     <label class="fs-6 fw-bold form-label mt-3" for="price_pesos">
                         Price ARG
                     </label>
-                    <input type="number" class="form-control form-control-solid" name="price_pesos" formControlName="price_pesos">
+                    <input type="number" class="form-control form-control-solid" name="price_pesos"
+                        formControlName="price_pesos">
                 </div>
                 <div class="col">
                     <label class="fs-6 fw-bold form-label mt-3" for="category">
                         Category
                     </label>
-                    <select name="category" id="category" class="form-control form-select-solid fw-bolder" formControlName="category">
+                    <select name="category" id="category" class="form-control form-select-solid fw-bolder"
+                        formControlName="category">
                         <option disabled selected hidden>Select an option</option>
                         <ng-container>
                             <option *ngFor="let category of categoriesList" [value]="category._id">{{category.title}}
@@ -83,7 +88,8 @@
                     <label class="fs-6 fw-bold form-label mt-3" for="level">
                         Level
                     </label>
-                    <select name="level" id="level" class="form-control form-select-solid fw-bolder" formControlName="level">
+                    <select name="level" id="level" class="form-control form-select-solid fw-bolder"
+                        formControlName="level">
                         <option disabled selected hidden>Select an option</option>
                         <option value="basic">Basic</option>
                         <option value="intermediate">Intermediate</option>
@@ -94,7 +100,8 @@
                     <label class="fs-6 fw-bold form-label mt-3" for="language">
                         Language
                     </label>
-                    <select name="language" id="language" class="form-control form-select-solid fw-bolder" formControlName="language">
+                    <select name="language" id="language" class="form-control form-select-solid fw-bolder"
+                        formControlName="language">
                         <option disabled selected hidden>Select an option</option>
                         <option value="English">English</option>
                         <option value="Spanish">Spanish</option>
@@ -105,7 +112,8 @@
                     <label class="fs-6 fw-bold form-label mt-3" for="instructor">
                         Instructor
                     </label>
-                    <select name="instructor" id="instructor" class="form-control form-select-solid fw-bolder" formControlName="instructor">
+                    <select name="instructor" id="instructor" class="form-control form-select-solid fw-bolder"
+                        formControlName="instructor">
                         <option disabled selected hidden>Select an option</option>
                         <ng-container *ngFor="let user of usersList">
                             <option [value]="user._id">{{user.name + ' ' + user.surname}}</option>
@@ -116,7 +124,7 @@
             <!--Upload the course cover-->
             <div class="row mb-7">
                 <div class="col-lg-6 col-md-6 col-sm-12 my-2">
-                    <label class="form-label">Sube tu imagen: *</label>
+                    <label class="form-label">Upload course cover image: *</label>
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="customFile" accept=".jpeg, .jpg, .png"
                             (change)="processFile($event)">
@@ -127,7 +135,7 @@
                     <img [src]="preview_image" width="100%" alt="Cover image for course" *ngIf="preview_image">
                 </div>
             </div>
-            
+
             <!--Load requeriments-->
             <div class="row mb-7">
                 <div class="col">
@@ -162,7 +170,8 @@
                                         {{requirement}}
                                     </td>
                                     <td class="fs-6">
-                                        <button type="button" class="btn btn-sm btn-danger" (click)="deleteRequirements(i)">-</button>
+                                        <button type="button" class="btn btn-sm btn-danger"
+                                            (click)="deleteRequirements(i)">-</button>
                                     </td>
                                 </tr>
                             </ng-container>
@@ -178,7 +187,8 @@
                         <label class="fs-6 fw-bold form-label mt-3 d-flex" for="who_is_it_for">
                             <span class="required me-2 text-nowrap">Who is it for?:</span>
                         </label>
-                        <input type="text" class="form-control form-control-solid" name="who_is_it_for_text" formControlName="who_is_it_for_text">
+                        <input type="text" class="form-control form-control-solid" name="who_is_it_for_text"
+                            formControlName="who_is_it_for_text">
                         <button type="button" class="btn btn-primary ms-2" (click)="addWhoIsItFor()">+</button>
                     </div>
                 </div>
@@ -204,7 +214,8 @@
                                         {{whoIsItFor}}
                                     </td>
                                     <td class="fs-6">
-                                        <button type="button" class="btn btn-sm btn-danger" (click)="deleteWhoIsItFor(i)">-</button>
+                                        <button type="button" class="btn btn-sm btn-danger"
+                                            (click)="deleteWhoIsItFor(i)">-</button>
                                     </td>
                                 </tr>
                             </ng-container>
@@ -227,22 +238,30 @@
                     <!--begin::Input-->
                     <!-- <textarea class="form-control form-control-solid" rows="4" style="height:100%;" name="description"></textarea> -->
                     <!--end::Input-->
-                    <ckeditor [data]="description" (change)="onChange($event)" [config]="{ versionCheck: false }"></ckeditor>
+                    <ckeditor [data]="description" (change)="onChange($event)" [config]="{ versionCheck: false }">
+                    </ckeditor>
                 </div>
             </div>
 
             <!--Upload the course cover-->
             <div class="row mb-7">
                 <div class="col-lg-6 col-md-6 col-sm-12 my-2">
-                    <label class="form-label">Sube tu imagen: *</label>
+                    <label class="form-label">Upload your video trailer: *</label>
                     <div class="custom-file">
                         <input type="file" name="video" class="custom-file-input" id="video" accept=".mp4"
                             (change)="processVideoFile($event)">
                         <label class="custom-file-label" for="video">Choose file</label>
                     </div>
+                    <ng-container *ngIf="link_video_vimeo">
+                        <iframe class="py-5" [src]="urlVideo()" frameborder="0"></iframe>
+                    </ng-container>
                 </div>
                 <div class="col">
-                    <button type="button" class="btn btn-sm btn-primary" (click)="uploadVideoVimeo()">Upload</button>
+                    <ng-container>
+                        <button type="button" class="btn btn-sm btn-primary" (click)="uploadVideoVimeo()"
+                            *ngIf="loadVideo">Upload</button>
+                        <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="!loadVideo"></span>
+                    </ng-container>
                 </div>
             </div>
             <!--end::Input group-->
