@@ -11,6 +11,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InlineSVGModule } from 'ng-inline-svg-2';
 import { CKEditorModule } from 'ckeditor4-angular';
+import { SectionAddComponent } from './sections/section-add/section-add.component';
+import { SectionEditComponent } from './sections/section-edit/section-edit.component';
+import { SectionDeleteComponent } from './sections/section-delete/section-delete.component';
 
 
 @NgModule({
@@ -20,6 +23,9 @@ import { CKEditorModule } from 'ckeditor4-angular';
     CourseListComponent,
     CourseEditComponent,
     CourseDeleteComponent,
+    SectionAddComponent,
+    SectionEditComponent,
+    SectionDeleteComponent,
   ],
   imports: [
     CommonModule,
