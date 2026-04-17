@@ -75,8 +75,21 @@
                                 </ng-container>
                             </td>
                             <td class="text-end">
-
-                                <a href="#" [routerLink]="['/courses/edit/', course._id]" routerLinkActive="router-link-active" 
+                                <a href="#" [routerLink]="['/courses/list/section/', course._id]"
+                                    routerLinkActive="router-link-active"
+                                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                                    onclick="return false">
+                                    <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                    <span class="svg-icon svg-icon-3">
+                                        <i class="ki-duotone ki-abstract-14 fs-3 d-flex justify-content-center">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </a>
+                                <a href="#" [routerLink]="['/courses/edit/', course._id]"
+                                    routerLinkActive="router-link-active"
                                     class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
                                     onclick="return false">
                                     <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->

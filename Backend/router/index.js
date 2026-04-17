@@ -16,7 +16,7 @@ router.use('/categories', Category);
 //http://localhost:3000/api/courses
 router.use('/courses', Course);
 
-////http://localhost:3000/api/courses_section
+////http://localhost:3000/api/course_section
 router.use('/course_section', CourseSection);
 
 
