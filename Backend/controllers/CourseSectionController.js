@@ -11,16 +11,17 @@ export default {
         })
       ) {
         res.status(200).send({
-          message: "The title already exist",
+          message: 403,
+          message_txt: "The title already exist",
+        });
+      } else {
+        const newCourseSection = await models.CourseSection.create(req.body);
+
+        res.status(200).json({
+          message: "Course section registered successfully",
+          newCourseSection: newCourseSection,
         });
       }
-
-      const newCourseSection = await models.CourseSection.create(req.body);
-
-      res.status(200).json({
-        message: "Course section registered successfully",
-        newCourseSection: newCourseSection,
-      });
     } catch (error) {
       console.log(error);
       res.status(500).send({
@@ -30,9 +31,22 @@ export default {
   },
   list: async (req, res) => {
     try {
-      let courseSectionsList = await models.CourseSection.find().sort({
-        createdAt: -1,
-      });
+      let course_id = req.query.course_id;
+      let courseSectionsList = [];
+
+      if (course_id) {
+        //If course id exist find the course section by id...
+        courseSectionsList = await models.CourseSection.find({
+          course: course_id,
+        }).sort({
+          createdAt: -1,
+        });
+        //if not return all courses sections
+      } else {
+        courseSectionsList = await models.CourseSection.find().sort({
+          createdAt: -1,
+        });
+      }
 
       res.status(200).json({
         message: "Course sections listed successfully",
