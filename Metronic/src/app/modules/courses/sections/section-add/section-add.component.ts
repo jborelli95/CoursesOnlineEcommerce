@@ -1,32 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CourseSectionService } from '../../service/course-section.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { CourseSection } from '../../models/course-section.interface';
 
 @Component({
   selector: 'app-section-add',
   templateUrl: './section-add.component.html',
   styleUrls: ['./section-add.component.scss']
 })
-export class SectionAddComponent implements OnInit {
+export class SectionAddComponent implements OnInit, OnDestroy {
 
-  isLoading$: any;
+  isLoading$: Observable<boolean>;
   title: string = "";
-  course_id: any = null;
-  courseSectionsList:any;
+  courseId: string | null = null;
+  courseSectionsList: CourseSection[] = [];
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private courseSectionService: CourseSectionService,
     private activatedRouter: ActivatedRoute,
     private toastr: ToastrService,
   ) {
-
+    this.isLoading$ = this.courseSectionService.isLoading$;
   }
 
   ngOnInit(): void {
-    this.isLoading$ = this.courseSectionService.isLoading$;
-    this.course_id = this.activatedRouter.snapshot.paramMap.get('course_id');
-    this.getCoruseSections(this.course_id);
+    this.courseId = this.activatedRouter.snapshot.paramMap.get('course_id');
+    this.getCourseSections(this.courseId);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   save() {
@@ -35,39 +43,45 @@ export class SectionAddComponent implements OnInit {
       return;
     }
 
-    let data = {
-      course: this.course_id,
+    const data: Partial<CourseSection> = {
+      course: this.courseId ?? undefined,
       title: this.title,
       state: 1
-    }
+    };
 
-    this.courseSectionService.registerCourseSection(data).subscribe((resp: any) => {
-      if(resp.message == 403){
-        this.toastr.error("The course section title already exist", "Error");
-        return
-      }else{
-        this.toastr.success("Course section added successfully", "Success");
-        this.title = "";
-        this.courseSectionsList.unshift(resp.newCourseSection);
-      }
-    })
+    this.courseSectionService.registerCourseSection(data)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (resp: any) => {
+          if (resp.message === 403) {
+            this.toastr.error("The course section title already exist", "Error");
+          } else {
+            this.toastr.success("Course section added successfully", "Success");
+            this.title = "";
+            this.courseSectionsList.unshift(resp.newCourseSection);
+          }
+        },
+        error: () => this.toastr.error("Something went wrong", "Error")
+      });
   }
 
-  editCourseSection() {
-
+  editCourseSection(courseId: string) {
+    console.log(courseId);
   }
 
-  deleteCourseSection() {
-
+  deleteCourseSection(courseId: string) {
+    console.log(courseId);
   }
 
-  getCoruseSections(course_id:any){
-    this.courseSectionService.listCoursesSection(course_id).subscribe({
-      next:(value:any) => {
-        this.courseSectionsList = value.courseSectionsList;
-        console.log(this.courseSectionsList);
-      }
-    });
+  getCourseSections(courseId: string | null) {
+    this.courseSectionService.listCoursesSection(courseId ?? undefined)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (value: any) => {
+          this.courseSectionsList = value.courseSectionsList;
+        },
+        error: () => this.toastr.error("Failed to load sections", "Error")
+      });
   }
 
 
