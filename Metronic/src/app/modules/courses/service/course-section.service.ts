@@ -4,7 +4,6 @@ import { AuthService } from '../../auth';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, finalize } from 'rxjs';
 import { URL_SERVICIOS } from 'src/app/config/config';
-import { param } from 'jquery';
 
 @Injectable({
   providedIn: 'root'
