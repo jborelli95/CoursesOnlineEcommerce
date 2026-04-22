@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h2 class="modal-title">Delete Section</h2>
+  <h2 class="modal-title">Delete Class</h2>
   <button type="button" class="btn-close" (click)="activeModal.dismiss()"></button>
 </div>
 
@@ -14,10 +14,19 @@
     </i>
   </div>
   <h3 class="fw-bolder text-gray-900 mb-3">Are you sure?</h3>
-  <p class="text-muted fs-6">This action cannot be undone. The section will be permanently deleted.</p>
+  <p class="text-muted fs-6">This action cannot be undone. The class will be permanently deleted.</p>
+</div>
+
+<div class="modal-body pt-0 text-center">
+  <div class="form-check form-check-custom form-check-solid justify-content-center">
+    <input class="form-check-input" type="checkbox" id="confirmDelete" [(ngModel)]="confirmed" />
+    <label class="form-check-label text-gray-700 ms-2" for="confirmDelete">
+      Yes, I want to permanently delete this class
+    </label>
+  </div>
 </div>
 
 <div class="modal-footer justify-content-center">
   <button type="button" class="btn btn-light me-3" (click)="activeModal.dismiss()">Cancel</button>
-  <button type="button" class="btn btn-danger" (click)="delete()">Delete</button>
+  <button type="button" class="btn btn-danger" (click)="delete()" [disabled]="!confirmed">Delete</button>
 </div>

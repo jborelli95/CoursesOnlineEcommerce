@@ -106,7 +106,20 @@
                                                 <span class="badge badge-light-success fs-7 fw-bolder">Active</span>
                                             </td>
                                             <td class="text-center">
-                                                <a href="#" (click)="editCourseSection(item._id)"
+                                                <a href="#" routerLinkActive="router-link-active"
+                                                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+                                                    [routerLink]="['/courses/list/section/class/', item._id]"
+                                                    routerLinkActive="router-link-active">
+                                                    <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                                    <span class="svg-icon svg-icon-3">
+                                                        <i class="ki-duotone ki-questionnaire-tablet fs-3">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </a>
+                                                <a href="#" (click)="editCourseSection(item)"
                                                     routerLinkActive="router-link-active"
                                                     class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
                                                     onclick="return false">

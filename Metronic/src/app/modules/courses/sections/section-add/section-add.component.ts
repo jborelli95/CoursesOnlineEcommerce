@@ -4,6 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { CourseSection } from '../../models/course-section.interface';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SectionEditComponent } from '../section-edit/section-edit.component';
+import { SectionDeleteComponent } from '../section-delete/section-delete.component';
 
 @Component({
   selector: 'app-section-add',
@@ -23,6 +26,7 @@ export class SectionAddComponent implements OnInit, OnDestroy {
     private courseSectionService: CourseSectionService,
     private activatedRouter: ActivatedRoute,
     private toastr: ToastrService,
+    private modalService: NgbModal,
   ) {
     this.isLoading$ = this.courseSectionService.isLoading$;
   }
@@ -65,12 +69,28 @@ export class SectionAddComponent implements OnInit, OnDestroy {
       });
   }
 
-  editCourseSection(courseId: string) {
-    console.log(courseId);
+  editCourseSection(section: CourseSection) {
+    // We create a modalref to the edit section component, opening an emergent windows, instancando el c
+    const modalRef = this.modalService.open(SectionEditComponent, { centered: true, size: 'md' });
+    modalRef.componentInstance.section = section;
+    modalRef.componentInstance.sectionUpdated.subscribe((updated: CourseSection) => {
+      const index = this.courseSectionsList.findIndex(s => s._id === updated._id);
+      if (index !== -1) {
+        this.courseSectionsList[index] = updated;
+      }
+    });
   }
 
-  deleteCourseSection(courseId: string) {
-    console.log(courseId);
+  deleteCourseSection(sectionCourseId: string) {
+    const modalRef = this.modalService.open(SectionDeleteComponent, { centered: true, size: 'md' });
+    modalRef.componentInstance.section_id = sectionCourseId;
+    modalRef.componentInstance.sectionDelete.subscribe(() => {
+      let index = this.courseSectionsList.findIndex((item: any) => item._id === sectionCourseId);
+
+      if (index != -1) {
+        this.courseSectionsList.splice(index, 1);
+      }
+    })
   }
 
   getCourseSections(courseId: string | null) {
