@@ -11,7 +11,7 @@ import { UserService } from '../service/user.service';
 export class UsersDeleteComponent {
 
   @Input() dUser: any;
-    @Output() userD: EventEmitter<any> = new EventEmitter();
+  @Output() userD: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private toastr: ToastrService,
@@ -20,7 +20,7 @@ export class UsersDeleteComponent {
   ) { }
 
   deleteUser() {
-    this.userService.remove(this.dUser._id).subscribe((resp:any) => {
+    this.userService.remove(this.dUser._id).subscribe((resp: any) => {
       console.log(resp);
       this.userD.emit('');
       this.modal.close();

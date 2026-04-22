@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h2 class="modal-title">Edit Course Section</h2>
+  <h2 class="modal-title">Edit Class</h2>
   <button type="button" class="btn-close" (click)="activeModal.dismiss()"></button>
 </div>
 
@@ -7,6 +7,10 @@
   <div class="mb-5">
     <label class="fs-6 fw-bold form-label required">Title</label>
     <input type="text" class="form-control form-control-solid" [(ngModel)]="title" />
+  </div>
+  <div class="mb-5">
+    <label class="fs-6 fw-bold form-label required">Description</label>
+    <ckeditor [data]="description" (change)="onChange($event)" [config]="{ versionCheck: false }"></ckeditor>
   </div>
 </div>
 
