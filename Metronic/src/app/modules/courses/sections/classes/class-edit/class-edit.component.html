@@ -12,6 +12,31 @@
     <label class="fs-6 fw-bold form-label required">Description</label>
     <ckeditor [data]="description" (change)="onChange($event)" [config]="{ versionCheck: false }"></ckeditor>
   </div>
+  <div class="mb-6">
+    <label class="form-label">Upload your video: *</label>
+    <div class="custom-file">
+      <input type="file" name="video" class="custom-file-input" id="video" accept=".mp4"
+        (change)="processVideoFile($event)">
+      <label class="custom-file-label" for="video">Choose file</label>
+    </div>
+    <ng-container *ngIf="link_video_vimeo">
+      <iframe class="py-5" [src]="urlVideo()" frameborder="0"></iframe>
+    </ng-container>
+    <div class="col pt-3">
+      <ng-container>
+        <button type="button" class="btn btn-sm btn-primary" (click)="uploadVideoVimeo()"
+          *ngIf="loadVideo">Upload</button>
+        <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="!loadVideo"></span>
+      </ng-container>
+    </div>
+  </div>
+  <div class="mb-5">
+    <label class="fs-6 fw-bold form-label required">State</label>
+    <select class="form-select form-select-solid" [(ngModel)]="state">
+      <option [value]="1">Active</option>
+      <option [value]="2">Inactive</option>
+    </select>
+  </div>
 </div>
 
 <div class="modal-footer">
