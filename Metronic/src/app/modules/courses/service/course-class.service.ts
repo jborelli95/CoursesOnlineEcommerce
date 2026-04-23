@@ -60,4 +60,15 @@ export class CourseClassService {
       finalize(() => this.isLoadingSubject.next(false)),
     );
   }
+
+  uploadVideoVimeo(videoData: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'token': this.authservice.token });
+    const url = URL_SERVICIOS + "/course/class/upload/vimeo";
+    console.log(url);
+    console.log(videoData);
+    return this.http.post(url, videoData, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false)),
+    )
+  }
 }

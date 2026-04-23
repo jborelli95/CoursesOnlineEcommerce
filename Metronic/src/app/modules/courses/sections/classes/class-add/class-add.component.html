@@ -87,7 +87,10 @@
                                         <span class="text-dark fw-bolder d-block fs-7">{{item.time}}</span>
                                     </td>
                                     <td class="text-center">
-                                        <span class="badge badge-light-success fs-7 fw-bolder">Active</span>
+                                        <span class="badge fs-7 fw-bolder"
+                                          [ngClass]="item.state === 1 ? 'badge-light-success' : 'badge-light-danger'">
+                                          {{ item.state === 1 ? 'Active' : 'Inactive' }}
+                                        </span>
                                     </td>
                                     <td class="text-center">
                                         <a href="#" (click)="editCourseSectionClass(item)"
