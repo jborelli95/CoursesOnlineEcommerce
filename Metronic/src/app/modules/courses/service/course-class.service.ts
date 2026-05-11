@@ -71,4 +71,33 @@ export class CourseClassService {
       finalize(() => this.isLoadingSubject.next(false)),
     )
   }
+
+  getClassFiles(class_id: string) {
+    this.isLoadingSubject.next(true);
+    const headers = new HttpHeaders({ 'token': this.authservice.token });
+    const url = `${URL_SERVICIOS}/course/class/file/list/${class_id}`;
+    return this.http.get(url, { headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false)),
+    );
+  }
+
+  uploadFile(fileData: any) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'token': this.authservice.token });
+    const url = URL_SERVICIOS + "/course/class/file/upload";
+    console.log(url);
+    console.log(fileData);
+    return this.http.post(url, fileData, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false)),
+    )
+  }
+
+  removeClassFile(file_id: string) {
+    this.isLoadingSubject.next(true);
+    const headers = new HttpHeaders({ 'token': this.authservice.token });
+    const url = `${URL_SERVICIOS}/course/class/file/delete/${file_id}`;
+    return this.http.delete(url, { headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false)),
+    );
+  }
 }

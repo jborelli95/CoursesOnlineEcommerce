@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 import { CourseClass } from '../../../models/course-class.interface';
+import { CourseClassFile } from '../../../models/course-class-file.interface';
 import { CourseClassService } from '../../../service/course-class.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -17,12 +18,16 @@ export class ClassEditComponent implements OnInit, OnDestroy {
   @Output() classUpdated = new EventEmitter<CourseClass>();
 
   title: string = '';
-  description: any = '';
+  description: string = '';
   state: number = 1;
   file_video: any;
+  file_document: any;
   loadVideo: boolean = true;
+  loadFile: boolean = true;
+  classFiles: CourseClassFile[] = [];
   link_video_vimeo: any = null;
-  courseClassId:string = '';
+  safeVideoUrl: any = null;
+  courseClassId: string = '';
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -39,7 +44,20 @@ export class ClassEditComponent implements OnInit, OnDestroy {
       this.state = this.courseClass.state;
       this.courseClassId = this.courseClass._id;
       this.link_video_vimeo = this.courseClass.vimeo_id;
+      if (this.link_video_vimeo) {
+        this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.link_video_vimeo);
+      }
+      this.loadClassFiles();
     }
+  }
+
+  loadClassFiles() {
+    this.courseClassService.getClassFiles(this.courseClassId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (resp: any) => { this.classFiles = resp.files; },
+        error: () => this.toastr.error('Could not load class files', 'Error')
+      });
   }
 
   ngOnDestroy(): void {
@@ -53,7 +71,13 @@ export class ClassEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const data = { ...this.courseClass, title: this.title, description: this.description, state: this.state };
+    const data = {
+      _id: this.courseClass!._id,
+      courseSection: this.courseClass!.courseSection,
+      title: this.title,
+      description: this.description,
+      state: this.state,
+    };
 
     this.courseClassService.updateCourseClass(data)
       .pipe(takeUntil(this.destroy$))
@@ -75,6 +99,75 @@ export class ClassEditComponent implements OnInit, OnDestroy {
     this.file_video = $event.target.files[0];
   }
 
+  processFile($event: any) {
+    console.log($event.target.files[0]);
+    this.file_document = $event.target.files[0];
+  }
+
+  uploadFile() {
+    if (!this.file_document) {
+      this.toastr.error("Need upload a File", "Error");
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append("file", this.file_document);
+    formData.append("class_id", this.courseClassId);
+
+    
+    //this.loadFile = false;
+
+    // this.courseClassService.uploadFile(formData).pipe(takeUntil(this.destroy$)).subscribe({
+    //   next:(resp:any) => {
+    //     console.log(resp);
+    //     this.loadFile = true;
+    //   },
+    //   error: () => {
+    //     this.loadFile = true;
+    //     this.toastr.error("Something went wrong uploading the file", "Error");
+    //   }
+    // })
+
+    // this.courseClassService.uploadFile(formData).pipe(takeUntil(this.destroy$)).subscribe({
+    //   next: (resp: any) => {
+    //     console.log(resp);
+    //     this.loadFile = true;
+    //     this.file_document = null;
+    //     this.toastr.success("File uploaded successfully", "Success");
+    //     this.loadClassFiles();
+    //   },
+    //   error: () => {
+    //     this.loadFile = true;
+    //     this.toastr.error("Something went wrong uploading the file", "Error");
+    //   }
+    // });
+  }
+
+  deleteFile(file_id: string) {
+    this.courseClassService.removeClassFile(file_id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.toastr.success('File deleted', 'Success');
+          this.loadClassFiles();
+        },
+        error: () => this.toastr.error('Could not delete the file', 'Error')
+      });
+  }
+
+  getFileIcon(filename: string): string {
+    const ext = filename?.split('.').pop()?.toLowerCase();
+    if (ext === 'pdf') return 'assets/media/svg/files/pdf.svg';
+    if (ext === 'doc' || ext === 'docx') return 'assets/media/svg/files/doc.svg';
+    return 'assets/media/svg/files/doc.svg';
+  }
+
+  formatSize(bytes: number): string {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+  }
+
   uploadVideoVimeo() {
     if (!this.file_video) {
       this.toastr.error("Need upload a video", "Error");
@@ -87,16 +180,13 @@ export class ClassEditComponent implements OnInit, OnDestroy {
     formData.append("_id", this.courseClassId);
     this.loadVideo = false;
 
-    this.courseClassService.uploadVideoVimeo(formData).subscribe(
+    this.courseClassService.uploadVideoVimeo(formData).pipe(takeUntil(this.destroy$)).subscribe(
       (resp: any) => {
         console.log(resp);
         this.loadVideo = true;
-        this.toastr.error("Video trailer uploaded successfully", "Success");
+        this.toastr.success("Video uploaded successfully", "Success");
       }
     );
   }
 
-  urlVideo() {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.link_video_vimeo);
-  }
 }

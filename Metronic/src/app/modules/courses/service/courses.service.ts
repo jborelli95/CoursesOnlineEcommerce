@@ -53,19 +53,16 @@ export class CoursesService {
     )
   }
 
-  listCourses(search: any = null, state: any = null) {
+  listCourses(search: any = null, state: any = null, category: any = null) {
     this.isLoadingSubject.next(true);
     const headers = new HttpHeaders({ 'token': this.authservice.token });
-    let link = "?T=";
+    const params: string[] = [];
 
-    if (search) {
-      link += "&search=" + search;
-    }
+    if (search) params.push("search=" + encodeURIComponent(search));
+    if (state) params.push("state=" + encodeURIComponent(state));
+    if (category) params.push("category=" + encodeURIComponent(category));
 
-    if (state) {
-      link += "&state=" + state;
-    }
-
+    const link = params.length ? "?" + params.join("&") : "";
     const URL = URL_SERVICIOS + "/courses/list" + link;
 
     return this.http.get(URL, {

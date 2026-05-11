@@ -90,9 +90,16 @@ export default {
         ? { courseSection: courseSection_id }
         : {};
 
-      const courseClassesList = await models.CourseClass.find(filter).sort({
+      let courseClassesList = await models.CourseClass.find(filter).sort({
         createdAt: -1,
       });
+
+      courseClassesList = courseClassesList.map((value) => {
+        value.vimeo_id = value.vimeo_id ? `https://player.vimeo.com/video/${value.vimeo_id}` : null;
+        return value;
+      });
+
+      console.log(courseClassesList);
 
       res.status(200).json({
         message: "Course classes listed successfully",

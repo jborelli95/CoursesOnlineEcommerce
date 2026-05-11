@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil, delay } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CourseClassService } from '../../../service/course-class.service';
 import { ClassEditComponent } from '../class-edit/class-edit.component';
@@ -32,7 +32,7 @@ export class ClassAddComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private modalService: NgbModal,
   ) {
-    this.isLoading$ = this.courseClassService.isLoading$;
+    this.isLoading$ = this.courseClassService.isLoading$.pipe(delay(0));
   }
 
   ngOnInit(): void {

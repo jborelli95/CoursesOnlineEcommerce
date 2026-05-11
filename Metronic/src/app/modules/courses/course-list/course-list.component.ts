@@ -14,6 +14,8 @@ export class CourseListComponent implements OnInit {
   isLoading$: any;
   search: string = "";
   state: string = "";
+  category: string = "";
+  categoriesList: any = [];
 
   constructor(
     private coursesService: CoursesService,
@@ -23,18 +25,19 @@ export class CourseListComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading$ = this.coursesService.isLoading$;
     this.listCourses();
+    this.coursesService.configAll().subscribe((resp: any) => {
+      this.categoriesList = resp.categories_list;
+    })
   }
 
   listCourses() {
-    //this.coursesService.isLoadingSubject.next(true); We dont need it. We already use this on service
-
-    this.coursesService.listCourses(this.search, this.state).subscribe({
-      next: (v: any) => {
-        console.log(v);
-        this.coursesList = v.courses_list;
-        //this.coursesService.isLoadingSubject.next(false);
-      }
+    this.coursesService.listCourses(this.search, this.state, this.category).subscribe({
+      next: (v: any) => { this.coursesList = v.courses_list; }
     });
+  }
+
+  findCourse() {
+    this.listCourses();
   }
 
   deleteCourse(course: any) {
