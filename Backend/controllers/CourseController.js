@@ -125,10 +125,13 @@ export default {
   list: async (req, res) => {
     try {
       let search = req.query.search;
+      let category = req.query.category;
 
-      let coursesList = await models.Course.find({
-        $and: [{ title: new RegExp(search, "i") }],
-      }).populate(["category", "user"]); // We need bring users and ccategory
+      let filter = {};
+      if (search) filter.title = new RegExp(search, "i");
+      if (category) filter.category = category;
+
+      let coursesList = await models.Course.find(filter).populate(["category", "user"]);
 
       coursesList = coursesList.map((course) => {
         return resource.Course.api_resource_course(course);

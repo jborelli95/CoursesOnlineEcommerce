@@ -20,7 +20,8 @@
       <label class="custom-file-label" for="video">Choose file</label>
     </div>
     <ng-container *ngIf="link_video_vimeo">
-      <iframe class="py-5" [src]="urlVideo()" frameborder="0"></iframe>
+      <iframe class="py-5 w-100" [src]="safeVideoUrl" frameborder="0" allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen></iframe>
     </ng-container>
     <div class="col pt-3">
       <ng-container>
@@ -36,6 +37,39 @@
       <option [value]="1">Active</option>
       <option [value]="2">Inactive</option>
     </select>
+  </div>
+
+  <div class="mb-6">
+    <label class="form-label">Upload your File: *</label>
+    <div class="custom-file">
+      <input type="file" name="file" class="custom-file-input" id="file" (change)="processFile($event)" accept=".pdf, .doc, .docx, .txt">
+      <label class="custom-file-label" for="file">Choose file</label>
+    </div>
+    <div class="col pt-3 mb-3">
+      <ng-container>
+        <button type="button" class="btn btn-sm btn-primary" (click)="uploadFile()" *ngIf="loadFile">Upload</button>
+        <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="!loadFile"></span>
+      </ng-container>
+    </div>
+    <div class="row g-3 mt-1">
+      <ng-container *ngIf="classFiles.length === 0">
+        <div class="col-12 text-center text-muted fs-7 py-3">No files uploaded yet.</div>
+      </ng-container>
+      <div class="col-12" *ngFor="let f of classFiles">
+        <div class="d-flex align-items-center border rounded p-3">
+          <img [src]="getFileIcon(f.file)" alt="" class="w-35px me-3">
+          <div class="flex-grow-1 overflow-hidden">
+            <a [href]="f.file_url" target="_blank" class="text-gray-800 text-hover-primary fw-bold text-truncate d-block">
+              {{ f.file }}
+            </a>
+            <span class="text-muted fs-7">{{ formatSize(f.size) }} &middot; {{ f.createdAt | date:'mediumDate' }}</span>
+          </div>
+          <button type="button" class="btn btn-sm btn-icon btn-light-danger ms-2" (click)="deleteFile(f._id)" title="Delete">
+            <i class="bi bi-trash fs-5"></i>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
